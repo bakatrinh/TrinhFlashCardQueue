@@ -266,7 +266,7 @@ public class ViewMainScreenJPanel extends JPanel{
 				_mainController.confirmExit();
 			}
 		});
-		_btnExit.setFocusable(false);
+		_btnExit.setFocusable(true);
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
