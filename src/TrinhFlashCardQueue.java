@@ -1,7 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 // Used to launch the program with given parameters
 public class TrinhFlashCardQueue {
