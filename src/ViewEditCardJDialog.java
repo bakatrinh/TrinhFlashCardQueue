@@ -15,31 +15,106 @@ import java.awt.event.ItemListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 
-// This class is used by MainScreenJPanel to edit, delete, and add new cards to the deck
+
+/**
+ * @author Trinh Nguyen
+ * @Discription This class is used by MainScreenJPanel to edit, delete, and add new cards to the deck
+ */
 public class ViewEditCardJDialog extends JDialog{
+	/**
+	 * Confirm button
+	 */
 	private JButton _btnConfirm;
+	/**
+	 * Cancel button
+	 */
 	private JButton _btnCancel;
+	/**
+	 * Scroll Pane to add scroll bar to the textPane
+	 */
 	private JScrollPane _scrollPane;
+	/**
+	 * Text pane for entering in String for front and
+	 * back data of the current card
+	 */
 	private JTextPane _textPane;
+	/**
+	 * Red color button to change card color to this color.
+	 */
 	private JButton _btnRed;
+	/**
+	 * Purple color button to change card color to this color.
+	 */
 	private JButton _btnPurple;
+	/**
+	 * Orange color button to change card color to this color.
+	 */
 	private JButton _btnOrange;
+	/**
+	 * Pink color button to change card color to this color.
+	 */
 	private JButton _btnPink;
+	/**
+	 * Yellow color button to change card color to this color.
+	 */
 	private JButton _btnYellow;
+	/**
+	 * Brown color button to change card color to this color.
+	 */
 	private JButton _btnBrown;
+	/**
+	 * Green color button to change card color to this color.
+	 */
 	private JButton _btnGreen;
+	/**
+	 * Graphite color button to change card color to this color.
+	 */
 	private JButton _btnGraphite;
+	/**
+	 * Blue color button to change card color to this color.
+	 */
 	private JButton _btnBlue;
+	/**
+	 * Purple color button to change card color to this color.
+	 */
 	private JButton _btnLightPurple;
+	/**
+	 * Teal color button to change card color to this color.
+	 */
 	private JButton _btnTeal;
+	/**
+	 * White color button to change card color to this color.
+	 */
 	private JButton _btnWhite;
+	/**
+	 * Delete card button
+	 */
 	private JButton _btnDelete;
+	/**
+	 * Check box that when checked will keep all newly created cards the
+	 * same color
+	 */
 	private JCheckBox _chckbxSameColorFor;
+	/**
+	 * Create new card quickly button
+	 */
 	private JButton _btnNewCard;
+	/**
+	 * A reference to the main JFrame this JDialog is tied to
+	 * Needed for centering this JDialog on the center of the JFrame
+	 */
 	private JFrame _topFrame;
+	/**
+	 * A reference to the main controller needed to call certain
+	 * methods when a button is pushed
+	 */
 	private ControllerFlashCardQueueMain _mainController;
 	
-	// Initial method to set up the components in the panel
+	/**
+	 * Constructor to set up the components in the JDialog
+	 * @param mainController Reference to main controller
+	 * @param topFrame Reference to the main JFrame
+	 */
 	public ViewEditCardJDialog(ControllerFlashCardQueueMain mainController, JFrame topFrame) {
 		super(topFrame, "", Dialog.ModalityType.DOCUMENT_MODAL);
 		_topFrame = topFrame;
@@ -333,24 +408,33 @@ public class ViewEditCardJDialog extends JDialog{
 		getContentPane().setLayout(groupLayout);
 	}
 	
-	// The following are getting methods used by controller
+	/**
+	 * Getter for Create New Card button
+	 * @return returns _btnNewCard
+	 */
 	public JButton getBtnNewCard() {
 		return _btnNewCard;
 	}
-	
+	/**
+	 * Getter for Check Box same color button
+	 * @return returns _chckbxSameColorFor
+	 */
 	public JCheckBox getChckbxSameColorFor() {
 		return _chckbxSameColorFor;
 	}
-	
+	/**
+	 * Getter for Confirm button
+	 * @return Returns _btnConfirm
+	 */
 	public JButton getBtnConfirm() {
 		return _btnConfirm;
 	}
-	
+	/**
+	 * Getter for text pane used to enter the text you want to store
+	 * for the current card
+	 * @return returns _textPane
+	 */
 	public JTextPane getTextPane() {
 		return _textPane;
-	}
-	
-	public JFrame getTopFrame() {
-		return _topFrame;
 	}
 }

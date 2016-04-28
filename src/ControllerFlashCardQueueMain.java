@@ -15,40 +15,76 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-
 import org.apache.commons.io.FilenameUtils;
 
+/**
+ * @author Trinh Nguyen
+ * @version 1.0
+ * 
+ * @Discription controller class that controls the navigation, addition, editing, saving,
+ * and organization f the Flash Card data
+ */
 public class ControllerFlashCardQueueMain {
 
-	// Stores all the flash card decks used in the program. This is whats gets saved and loaded from file
+	/**
+	 * Stores all the flash card decks used in the program. This is what gets saved and loaded from file
+	 */
 	private ModelFlashCardAllDecks _allDecks;
-	// Stores the data of the current card being displayed
+	/**
+	 * Stores the data of the current card being displayed
+	 */
 	private ModelFlashCard _currentCard;
-	// The main GUI that controls all visual components
+	/**
+	 * The main GUI that controls all visual components
+	 */
 	private ViewMainScreenJPanel _mainScreenJPanel;
-	// Holds old card text data, reverts to this if cancel button is pushed during editing
+	/**
+	 * Holds old card text data, reverts to this if cancel button is pushed during editing
+	 */
 	private String _tempOldText;
-	// Holds old card color data, reverts to this if cancel button is pushed during editing
+	/**
+	 * Holds old card color data, reverts to this if cancel button is pushed during editing
+	 */
 	private Color _tempOldColor;
-	// Holds the color that all new cards will be created by if colorlock is true
+	/**
+	 * Holds the color that all new cards will be created by if _colorLock is true
+	 */
 	private Color _chosenColor;
-	// Stores the file being opened or saved to
+	/**
+	 * Stores the file being opened or saved to
+	 */
 	private File _file;
-	// Returns true if the card is currently showing data of the front of the card
+	/**
+	 * Returns true if the card is currently showing data of the front of the card
+	 */
 	private boolean _front;
-	// Returns true if the user is currently viewing the working deck and not the memorized deck
+	/**
+	 * Returns true if the user is currently viewing the working deck and not the memorized deck
+	 */
 	private boolean _viewingWorkingDeck;
-	// Returns true if the user made some changes to the deck. Used by different methods to
-	// confirm to the user if they want to save.
+	/**
+	 * Returns true if the user made some changes to the deck. Used by different methods to
+	 * confirm to the user if they want to save.
+	 */
 	private boolean _isChanged;
-	// Returns true if the deck is currently a new deck and was not loaded from a file
+	/**
+	 * Returns true if the deck is currently a new deck and was not loaded from a file
+	 */
 	private boolean _newFile;
-	// Returns true if the user wants all new cards created to have the same color
+	/**
+	 * Returns true if the user wants all new cards created to have the same color
+	 */
 	private boolean _colorLock;
-	// Used by the editing JDialog window to determine when to show text for front or back of _currentCard
+	/**
+	 * Used by the editing JDialog window to determine when to show text for front or back of _currentCard
+	 */
 	private boolean _editFront;
 
-	// Constructor 
+	/**
+	 * Constructor, sets all attributes to default values. Creates blank default decks
+	 * for storing data and the GUI to display the information
+	 * @param topFrame reference to the main JFrame that will be storing all GUI components
+	 */
 	public ControllerFlashCardQueueMain(JFrame topFrame) {
 		_allDecks = new ModelFlashCardAllDecks();
 		_mainScreenJPanel = new ViewMainScreenJPanel(this, topFrame);
@@ -116,7 +152,9 @@ public class ControllerFlashCardQueueMain {
 		});
 	}
 
-	// Performs various checks before accessing the next card in the deck
+	/**
+	 * Used by controller to dequeue the deck and display that card
+	 */
 	public void nextCard() {
 		if (_viewingWorkingDeck) {
 			if (!_allDecks.getWorkingDeck().isEmpty()) {
@@ -171,12 +209,16 @@ public class ControllerFlashCardQueueMain {
 		_isChanged = true;
 	}
 
-	// Used by other classes to update the card in the main deck with new changes
+	/**
+	 * Used by other classes to update the card in the main deck with new changes
+	 */
 	public void updateCard() {
 		_allDecks.getMainDeck().replaceCard(_currentCard);
 	}
 
-	// Empties the Memorized Deck and Working Deck and recopies all cards from the Main Deck
+	/**
+	 * Empties the Memorized Deck and Working Deck and recopies all cards from the Main Deck
+	 */
 	public void resetDeck() {
 		int response = JOptionPane.showConfirmDialog(null, "Restore all memorized cards back to Main Deck and sort cards in order by ID?", "",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -203,8 +245,10 @@ public class ControllerFlashCardQueueMain {
 		}
 	}
 
-	// Used by FlashCardJDialog when the user hits the cancel button. This restores the data as it was before
-	// Any changes was made
+	/**
+	 * Used by FlashCardJDialog when the user hits the cancel button. This restores the data as it was before
+	 * Any changes was made
+	 */
 	public void cancelEditChanges() {
 		if (!_isChanged) {
 			_currentCard.setFrontData(_tempOldText);
@@ -232,12 +276,17 @@ public class ControllerFlashCardQueueMain {
 		_front = true;
 	}
 
-	// Used by other methods and class to give access to the current card being shown to the user
+	/**
+	 * Used by other methods and class to give access to the current card being shown to the user
+	 * @return Returns the current card that is being shown to the user
+	 */
 	public ModelFlashCard getCard() {
 		return _currentCard;
 	}
 
-	// Permanently removes the card from the Main deck and Working deck
+	/**
+	 * Permanently removes the card from the Main deck and Working deck
+	 */
 	public void deleteFlashCard() {
 		int deleteID = _currentCard.getID();
 		_currentCard = null;
@@ -247,7 +296,9 @@ public class ControllerFlashCardQueueMain {
 		nextCard();
 	}
 
-	// Makes the editing JDialog visible with correct data based on the deck being worked on
+	/**
+	 * Makes the editing JDialog visible with correct data based on the deck being worked on
+	 */
 	public void popUpEditJDialog() {
 		if (_currentCard != null) {
 			resetEditCardWindow();
@@ -258,7 +309,9 @@ public class ControllerFlashCardQueueMain {
 		}
 	}
 
-	// Flips the card
+	/**
+	 * Flips the card
+	 */
 	public void flip() {
 		if (_currentCard != null) {
 			if (_front) {
@@ -272,12 +325,17 @@ public class ControllerFlashCardQueueMain {
 		}
 	}
 
-	// Used by other methods to tell the program if new cards will have the same color
+	/**
+	 * Used by other methods to tell the program if new cards will have the same color
+	 * @param isColorLock Returns true if the "same color for new card" check box is checked, else return false
+	 */
 	public void setColorLock(boolean isColorLock) {
 		_colorLock = isColorLock;
 	}
 
-	// Used to enqueue the current card until it is back to the current card being displaeyed
+	/**
+	 * Used to enqueue the current card until it is back to the current card being displaeyed
+	 */
 	public void enqueueBackToCurrent() {
 		if (_viewingWorkingDeck) {
 			_allDecks.getWorkingDeck().enqueue(_currentCard);
@@ -293,48 +351,70 @@ public class ControllerFlashCardQueueMain {
 		nextCard();
 	}
 
-	// Used to make the current card enqueue until it is the next next one in line
+	/**
+	 * Used to make the current card enqueue until it is the next next one in line
+	 */
 	public void enqueueBackToNext() {
 		_allDecks.getWorkingDeck().enqueueBacktoNext();
 		nextCard();
 	}
 
-	// Used to make the current card enqueue until it is the next in line
+	/**
+	 * Used to make the current card enqueue until it is the next in line
+	 */
 	public void enqueueBackToFirst() {
 		_allDecks.getWorkingDeck().enqueueBacktoFirst();
 		nextCard();
 	}
 
-	// Used by fileOpener to set the current deck to the one chosen
+	/**
+	 * Used by fileOpener to set the current deck to the one chosen. Once deck is loaded, nextCard() is
+	 * automatically called
+	 * @param newDeck reference to the file that contains the deck the user wants to load
+	 */
 	public void newDeck(ModelFlashCardAllDecks newDeck) {
 		_allDecks = newDeck;
 		_currentCard = null;
 		nextCard();
 	}
 
-	// Used to restore color to what the card color would be if it was not locked
+	/**
+	 * Used to restore color to what the card color would be if it was not locked
+	 * @return Returns a color from HelperCardColors based on the index of the main deck
+	 */
 	public Color unlockColor() {
 		return new HelperCardColors().getColor(_allDecks.getMainDeck().getCardCounter()-1);
 	}
 
-	// Used to create new cards and update the FlashCardJPanel to that of the new card
+	/**
+	 * Used to create new cards and update the FlashCardJPanel to that of the new card
+	 */
 	public void quickAddNewCard() {
 		addNewCardMainScreen();
 		_tempOldText = _currentCard.getFrontData();
 		_tempOldColor = _currentCard.getCardColor();
 	}
 
-	// Used by other methods and class to determine if changes were made
+	/**
+	 * Used by other methods and class to determine if changes were made
+	 * @param isChanged if the current deck has been changed, make isChanged = true,
+	 * else isChanged = false
+	 */
 	public void setIsChanged(boolean isChanged) {
 		_isChanged = isChanged;
 	}
 
-	// Returns true if the deck has been changed
+	/**
+	 * Returns true if the deck has been changed
+	 * @return returns true if the deck has been modified, else returns false
+	 */
 	public boolean getIsChanged() {
 		return _isChanged;
 	}
 
-	// Adds a new card and sets the appropriate data
+	/**
+	 * Adds a new card and sets the appropriate data
+	 */
 	public void addNewCardMainScreen() {
 		if (_currentCard != null) {
 			_allDecks.getWorkingDeck().enqueue(_currentCard);
@@ -361,14 +441,18 @@ public class ControllerFlashCardQueueMain {
 		}
 	}
 
-	// Adds a "*" to the title if changes were made and not saved
+	/**
+	 * Adds a "*" to the title if changes were made and not saved
+	 */
 	public void setFrameTitleUnsaved() {
 		if (!_mainScreenJPanel.getTopFrame().getTitle().contains("*")) {
 			_mainScreenJPanel.getTopFrame().setTitle(_mainScreenJPanel.getTopFrame().getTitle()+"*");
 		}
 	}
 
-	// Dequeue all the cards in memorized deck and move them over to the working deck
+	/**
+	 * Dequeue all the cards in memorized deck and move them over to the working deck
+	 */
 	public void restore() {
 		int response = JOptionPane.showConfirmDialog(null, "Move all memorized cards in the Memorized Deck back into Main Deck?", "",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -401,7 +485,9 @@ public class ControllerFlashCardQueueMain {
 		}
 	}
 
-	// Called every time the user clicks on the Memorized Deck pile
+	/**
+	 * Called every time the user clicks on the Memorized Deck pile
+	 */
 	public void switchToMemorized() {
 		if (_viewingWorkingDeck) {
 			_mainScreenJPanel.getBtnMoveToMemorized().setText("Not Memorized");
@@ -418,7 +504,9 @@ public class ControllerFlashCardQueueMain {
 		}
 	}
 
-	// Called every time the user clicks on the working deck pile
+	/**
+	 * Called every time the user clicks on the working deck pile
+	 */
 	public void switchToWorkingDeck() {
 		if (!_viewingWorkingDeck) {
 			_mainScreenJPanel.getBtnMoveToMemorized().setText("Memorized");
@@ -435,7 +523,9 @@ public class ControllerFlashCardQueueMain {
 		}
 	}
 
-	// Used to move cards into Memorized pile or out of it
+	/**
+	 * Used to move cards into Memorized pile or out of it
+	 */
 	public void moveCurrentCardToOrFromMain() {
 		if (_viewingWorkingDeck) {
 			if (_currentCard != null) {
@@ -455,8 +545,10 @@ public class ControllerFlashCardQueueMain {
 		setFrameTitleUnsaved();
 	}
 
-	// Refreshes the buttons to enable or disable based on what the user is allowed to do. Updates different components
-	// to represent the Flash Card Deck data
+	/**
+	 * Refreshes the buttons to enable or disable based on what the user is allowed to do.
+	 * Updates different components to represent the Flash Card Deck data
+	 */
 	public void refreshButtonsAndCounters() {
 		if (_viewingWorkingDeck) {
 			if (_currentCard == null) {
@@ -506,25 +598,35 @@ public class ControllerFlashCardQueueMain {
 		}
 	}
 
-	// Used by other classes and method to determine if the user is on the WorkingDeck
+	/**
+	 * Used by other classes and method to determine if the user is on the WorkingDeck
+	 * @return returns True if the user is currently viewing the working deck, else returns False (user is viewing
+	 * memorized deck)
+	 */
 	public boolean getIsViewingWorkingDeck() {
 		return _viewingWorkingDeck;
 	}
 
-	// Sets the current deck to the deck specified. If no deck is specified, then a new deck is made
+	/**
+	 * Sets the current deck to the deck specified. If no deck (allDecks is null) is specified,
+	 * then a new deck is made
+	 * @param allDecks reference to the deck loaded by the File, if allDecks is null, a new deck is
+	 * created instead.
+	 */
 	public void setNewDecks(ModelFlashCardAllDecks allDecks) {
 		if (allDecks == null) {
 			_allDecks = new ModelFlashCardAllDecks();
 			newDeck(_allDecks);
 		}
 		else {
-			_allDecks = allDecks;
 			newDeck(allDecks);
 		}
 		switchToWorkingDeck();
 	}
 
-	// Makes a new deck, ask for confirmation if changes were made
+	/**
+	 * Makes a new deck, ask for confirmation if changes were made
+	 */
 	public void newDeck() {
 
 		if (!_isChanged) {
@@ -555,7 +657,9 @@ public class ControllerFlashCardQueueMain {
 
 	}
 
-	// Opens the file that has deck data
+	/**
+	 * Opens the file that has deck data
+	 */
 	public void openDeck() {
 		if (!_isChanged) {
 			int returnVal = _mainScreenJPanel.getFileChooser().showOpenDialog(_mainScreenJPanel.getTopFrame());
@@ -583,7 +687,9 @@ public class ControllerFlashCardQueueMain {
 		}
 	}
 
-	// Actual open method used by OpenDeck and other methods
+	/**
+	 * Actual open method used by OpenDeck and other methods
+	 */
 	public void open() {
 		ModelFlashCardAllDecks newDeck = new ModelFlashCardAllDecks();
 		ObjectInputStream inputStream = null;
@@ -624,7 +730,9 @@ public class ControllerFlashCardQueueMain {
 		}
 	}
 
-	// Save or Save As the current deck
+	/**
+	 * Save or Save As the current deck
+	 */
 	public void saveDeck() {
 		if (!_newFile) {
 			save();
@@ -634,7 +742,9 @@ public class ControllerFlashCardQueueMain {
 		}
 	}
 
-	// Main core saving method
+	/**
+	 * Main core saving method, called when there is an active file to save to
+	 */
 	public void save() {
 		if (_viewingWorkingDeck) {
 			if (_currentCard != null) {
@@ -682,7 +792,9 @@ public class ControllerFlashCardQueueMain {
 		_mainScreenJPanel.getTopFrame().setTitle(_file.getName());
 	}
 
-	// Ask the user for the location of where they want to save
+	/**
+	 * Ask the user for the location of where they want to save
+	 */
 	public void saveAsDeck() {
 		int returnVal = _mainScreenJPanel.getFileChooser().showSaveDialog(_mainScreenJPanel.getTopFrame());
 
@@ -698,7 +810,9 @@ public class ControllerFlashCardQueueMain {
 		}
 	}
 
-	// Make sure the use wants to save before exiting the program
+	/**
+	 * Make sure the use wants to save before exiting the program
+	 */
 	public void confirmExit() {
 		if (!_isChanged) {
 			System.exit(0);
@@ -721,7 +835,11 @@ public class ControllerFlashCardQueueMain {
 			}
 		}
 	}
-
+	
+	/**
+	 * Called when the user left or right clicks on the currently displaying Flash Card JPanel
+	 * @param e if 'e' is a right mouse click, then popUpEditJDialog() is called, else (left mouse click) flip() is called
+	 */
 	public void flashCardPanelClicked(MouseEvent e) {
 		if (_currentCard != null) {
 			if (SwingUtilities.isRightMouseButton(e)) {
@@ -733,7 +851,9 @@ public class ControllerFlashCardQueueMain {
 		}
 	}
 
-	// Used by outside classes update the colors, text on the JDialog before making it visible
+	/**
+	 * Used by outside classes to update the colors and text on the JDialog before making it visible
+	 */
 	public void resetEditCardWindow() {
 		if (_currentCard != null) {
 			if (getIsViewingWorkingDeck()) {
@@ -758,8 +878,11 @@ public class ControllerFlashCardQueueMain {
 		}
 	}
 
-	// Used to write out the string on the text pane if there are data or no data on the FlashCard currently being
-	// read
+	/**
+	 * Used to write out the string on the text pane if there are data or no data on the FlashCard
+	 * currently being read
+	 * @param text The string of what the TextPane of the edit JDialog will show
+	 */
 	private void setTextPane(String text) {
 		if (text.equals("") || text.equals("Enter Text for Front") || text.equals("Enter Text for Back")) {
 			if (_editFront) {
@@ -787,19 +910,28 @@ public class ControllerFlashCardQueueMain {
 		_mainScreenJPanel.getEditCardJDialog().getTextPane().requestFocus();
 	}
 
-	// FlashCard strings are stored with html code, this method converts it from html to regular text
+	/**
+	 * FlashCard strings are stored with html code, this method converts it from html to regular text
+	 * @param text Converts the string stored in the Flash Card data as html code to regular text
+	 * @return returns the converted regular text as a String
+	 */
 	private String convertFromCardString(String text) {
 		text = text.replace("<br />", "\r\n").replace("<br />", "\n");
 		return text;
 	}
 
-	// Sets the background color of the textpane
+	/**
+	 * Sets the background color of the textpane
+	 */
 	private void setTextPaneBackground() {
 		_mainScreenJPanel.getEditCardJDialog().getTextPane().setBackground(_currentCard.getCardColor());
 	}
 
-	// Sets the color being selected by the user. It is stored in case the user turns on the option
-	// To keep all new card colors the same
+	/**
+	 * Sets the color being selected by the user. It is stored in case the user turns on the
+	 * option to keep all new card colors the same
+	 * @param color The current color that the user selected.
+	 */
 	public void setColor(Color color) {
 		_chosenColor = color;
 		_currentCard.setColors(_chosenColor);
@@ -808,13 +940,18 @@ public class ControllerFlashCardQueueMain {
 		_mainScreenJPanel.getEditCardJDialog().getTextPane().requestFocus();
 	}
 
-	// Used by editing JDialog window when Cancel button is pushed. Revert changes done during editing
+	/**
+	 * Used by editing JDialog window when Cancel button is pushed.
+	 * Revert changes done during editing
+	 */
 	public void cancelButton() {
 		cancelEditChanges();
 		_mainScreenJPanel.getEditCardJDialog().setVisible(false);
 	}
 
-	// Used by editing JDialog window to change the function of the "Next" button
+	/**
+	 * Used by editing JDialog window to change the function of the "Next" button
+	 */
 	public void nextButtonEditJDialog() {
 		if (_editFront) {
 			_mainScreenJPanel.getEditCardJDialog().getBtnConfirm().setText("Save & Close");
@@ -842,7 +979,9 @@ public class ControllerFlashCardQueueMain {
 		}
 	}
 
-	// Used by JDialog window to quickly make changes to a card and then add a new card
+	/**
+	 * Used by JDialog window to quickly make changes to a card and then add a new card
+	 */
 	public void newCardEditCard() {
 		String text = _mainScreenJPanel.getEditCardJDialog().getTextPane().getText();
 		text = text.replace("\r\n", "<br />").replace("\n", "<br />");
@@ -857,7 +996,12 @@ public class ControllerFlashCardQueueMain {
 		resetEditCardWindow();
 	}
 
-	// If the state of the checkBox is checked, then makes all new card have the same color
+	/**
+	 * If the state of the checkBox is checked, then makes all new card have the same color
+	 * @param select is select is true, check box is checked, sets colorLock true, saves the color
+	 * the user selected to the _chosenColor. Else, sets colorLock to false, restore to the color
+	 * that is next on the HelperCardColors
+	 */
 	public void setSameColorCheckBox(boolean select) {
 		if (select) {
 			setColorLock(true);
@@ -871,7 +1015,10 @@ public class ControllerFlashCardQueueMain {
 		}
 	}
 
-	// Used by JDialog edit window. When the delete button is pushed, confirms to the user if they want to delete the current card
+	/**
+	 * Used by JDialog edit window. When the delete button is pushed,
+	 * confirms to the user if they want to delete the current card
+	 */
 	public void delete() {
 		int response = JOptionPane.showConfirmDialog(null, "Permanently delete this card?", "",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -891,12 +1038,18 @@ public class ControllerFlashCardQueueMain {
 		}
 	}
 
-	// Allows other class to access the current deck
+	/**
+	 * Allows other class to access the current deck
+	 * @return returns the current deck the user is working on
+	 */
 	public ModelFlashCardAllDecks getAllDecks() {
 		return _allDecks;
 	}
 
-	// Used by TrinhFlashCardQueue to load in the Main Screen into the JFrame
+	/**
+	 * Used by TrinhFlashCardQueue to load in the Main Screen into the JFrame
+	 * @return
+	 */
 	public ViewMainScreenJPanel getMainScreen() {
 		return _mainScreenJPanel;
 	}

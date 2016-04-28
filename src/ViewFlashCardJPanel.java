@@ -11,12 +11,28 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-// Class that draws a graphical representation of the current flash card to the user.
+/**
+ * @author Trinh Nguyen
+ * @Discription Class that draws a graphical representation of the current flash card to the user.
+ */
 public class ViewFlashCardJPanel extends JPanel{
+	/**
+	 * The text that will be shown on the JPanel, could be text of the front or back data
+	 */
 	private JLabel _cardText;
+	/**
+	 * Indicated whether the card is showing contents of the front of the card or the back
+	 */
 	private JLabel _lblCardSide;
+	/**
+	 * Indicates the ID of the card being displayed
+	 */
 	private JLabel _lblCardID;
 	
+	/**
+	 * Constructor to set up appearance and attributes for the card to be
+	 * displayed
+	 */
 	public ViewFlashCardJPanel() {
         setPreferredSize(new Dimension(430, 230));
         setMinimumSize(new Dimension(430,230));
@@ -74,7 +90,13 @@ public class ViewFlashCardJPanel extends JPanel{
         setLayout(groupLayout);
 	}
 	
-	// Sets the text field of the current card with html code to add text wrapping
+	/**
+	 * Sets the text field of the current card with html code to add text wrapping
+	 * @param text The text to be displayed on the JPanel
+	 * @param isFront if true, _lblCardSide will be set to "front" else, "back"
+	 * @param ID Increments this ID by 1 and converts it to a string
+	 * and set _lblCardID to this number
+	 */
 	public void setText(String text, boolean isFront, int ID) {
 		_cardText.setText("<html>" + text + "</html>");
 		_lblCardID.setText(Integer.toString(ID+1));
@@ -86,12 +108,17 @@ public class ViewFlashCardJPanel extends JPanel{
 		}
 	}
 	
-	// Sets the color of the current card being displayed
+	/**
+	 * Sets the color of the current card being displayed
+	 * @param currentColor The color the JLabel background will be set to
+	 */
 	public void setColor(Color currentColor) {
 		setBackground(currentColor);
 	}
 	
-	// Called by other classes to draw a main screen on the program
+	/**
+	 * Called by other classes to draw a main screen on the program
+	 */
 	public void drawTitle() {
 		setBackground(new Color(179, 216, 253));
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
@@ -103,7 +130,12 @@ public class ViewFlashCardJPanel extends JPanel{
         _cardText.setHorizontalAlignment(SwingConstants.CENTER);
 	}
 	
-	// Used to draw the appearance of the currently given card
+	/**
+	 * Used to draw the appearance of the currently given card
+	 * @param currentColor Color for the background to be changed to
+	 * @param text String of the text to be shown on the JPanel
+	 * @param ID The ID of the card to be displayed on the JPanel
+	 */
 	public void drawNormalCard(Color currentColor, String text, int ID) {
 		setBackground(currentColor);
         setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
@@ -115,7 +147,9 @@ public class ViewFlashCardJPanel extends JPanel{
         _cardText.setHorizontalAlignment(SwingConstants.CENTER);
 	}
 	
-	// Used to draw an empty box to show the user that there is no more cards
+	/**
+	 * Used to draw an empty box to show the user that there is no more cards
+	 */
 	public void drawEmpty() {
 		setBackground(Color.WHITE);
 		setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2));

@@ -2,7 +2,11 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 
-// Used to launch the program with given parameters
+/**
+ * @author Trinh Nguyen
+ * @Discription TrinhFlashCardQueue, uses the queue model as the framework
+ * for this Flash Card viewing program
+ */
 public class TrinhFlashCardQueue {
 	
 	/**

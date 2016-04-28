@@ -16,38 +16,117 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Dimension;
 
-// Main Screen class. Displays representation of the current cards and decks. Allows the user
-// To edit, save, delete, and move cards around
-public class ViewMainScreenJPanel extends JPanel{
-	private JButton _btnOpen;
-	private JButton _btnSave;
-	private JButton _btnSaveAs;
-	private JButton _btnReset;
-	private JButton _btnNewCard;
-	private JButton _btnEditCard;
-	private JButton _btnClearMemorized;
-	private JButton _btnMoveToMemorized;
-	private JButton _btnFlip;
-	private JButton _btnNext;
-	private JButton _btnNew;
-	private JButton _btnRevertToFile;
-	private JFrame _topFrame;
-	private JButton _btnExit;
-	private JFileChooser _fileChooser;
-	private ControllerFlashCardQueueMain _mainController;
-	private File _file;
-	private ViewFlashCardJPanel _flashCardPanel;
-	private ViewEditCardJDialog _editCardJDialog;
-	private ViewDeckIconJPanel _workingDeckIconJPanel;
-	private ViewDeckIconJPanel _memorizedDeckIconJPanel;
 
+/**
+ * @author Trinh Nguyen
+ * @Discription Main Screen class. Displays representation of the current cards and decks. Allows the user
+ * to edit, save, delete, and move cards around
+ */
+public class ViewMainScreenJPanel extends JPanel{
+	/**
+	 * Open saved deck Button
+	 */
+	private JButton _btnOpen;
+	/**
+	 * Save current deck button
+	 */
+	private JButton _btnSave;
+	/**
+	 * Save deck to specific location button
+	 */
+	private JButton _btnSaveAs;
+	/**
+	 * Reset button
+	 */
+	private JButton _btnReset;
+	/**
+	 * Make new card button
+	 */
+	private JButton _btnNewCard;
+	/**
+	 * Edit card button
+	 */
+	private JButton _btnEditCard;
+	/**
+	 * Clear the memorized deck button
+	 */
+	private JButton _btnClearMemorized;
+	/**
+	 * Move card to the memorized deck button
+	 */
+	private JButton _btnMoveToMemorized;
+	/**
+	 * Flip between the front and back of the card button
+	 */
+	private JButton _btnFlip;
+	/**
+	 * Go to next card button
+	 */
+	private JButton _btnNext;
+	/**
+	 * Make new deck button
+	 */
+	private JButton _btnNew;
+	/**
+	 * Reload the deck to the file button
+	 */
+	private JButton _btnRevertToFile;
+	/**
+	 * Exit program button
+	 */
+	private JButton _btnExit;
+	/**
+	 * The main JFrame this window is contained in
+	 */
+	private JFrame _topFrame;
+	/**
+	 * File browsing component
+	 */
+	private JFileChooser _fileChooser;
+	/**
+	 * Reference to the main controller that manage the appearance of this
+	 * JPanel
+	 */
+	private ControllerFlashCardQueueMain _mainController;
+	/**
+	 * Reference to any file that is loaded or saved to
+	 */
+	private File _file;
+	/**
+	 * Reference to the center JPanel that displays contents of the current
+	 * viewing card
+	 */
+	private ViewFlashCardJPanel _flashCardPanel;
+	/**
+	 * Reference to the edit card JDialog window
+	 */
+	private ViewEditCardJDialog _editCardJDialog;
+	/**
+	 * Reference to the JPanel that displayed graphical representation of the
+	 * working deck
+	 */
+	private ViewDeckIconJPanel _workingDeckIconJPanel;
+	/**
+	 * Reference to the JPanel that displayed graphical representation of the
+	 * memorized deck
+	 */
+	private ViewDeckIconJPanel _memorizedDeckIconJPanel;
+	/**
+	 * Constructor, links itself to main controller and main JFrame, makes a
+	 * new JDialog card editing window as well and then initializes all components
+	 * @param mainController Reference to the main controller
+	 * @param topFrame Reference to the main JFrame
+	 */
 	public ViewMainScreenJPanel(ControllerFlashCardQueueMain mainController, JFrame topFrame) {
 		_mainController = mainController;
 		_topFrame = topFrame;
 		_editCardJDialog = new ViewEditCardJDialog(_mainController, _topFrame);
 		initComponents();
 	}
-
+	
+	/**
+	 * Initializes each components and adds actionlistener to corresponding buttons
+	 */
 	private void initComponents() {
 		_topFrame.setTitle("Untitled Deck");
 		_topFrame.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -348,59 +427,101 @@ public class ViewMainScreenJPanel extends JPanel{
 		setLayout(groupLayout);
 	}
 	
-	// The following are getter methods used by the controller
+	/**
+	 * Getter for main JFrame
+	 * @return Returns _topFrame
+	 */
 	public JFrame getTopFrame() {
 		return _topFrame;
 	}
-
+	/**
+	 * Getter for next card button
+	 * @return Returns _btnNext
+	 */
 	public JButton getBtnNext() {
 		return _btnNext;
 	}
-
+	/**
+	 * Getter for the Flip card button
+	 * @return Returns _btnFlip
+	 */
 	public JButton getBtnFlip() {
 		return _btnFlip;
 	}
-
+	/**
+	 * Getter for move to memorized deck button
+	 * @return Returns _btnMoveToMemorized
+	 */
 	public JButton getBtnMoveToMemorized() {
 		return _btnMoveToMemorized;
 	}
-
+	/**
+	 * Getter for making new card button
+	 * @return Returns _btnNewCard
+	 */
 	public JButton getBtnNewCard() {
 		return _btnNewCard;
 	}
-
+	/**
+	 * Getter for edit card button
+	 * @return _btnEditCard
+	 */
 	public JButton getBtnEditCard() {
 		return _btnEditCard;
 	}
-
+	/**
+	 * Getter for clear the memorized deck button
+	 * @return Returns _btnClearMemorized
+	 */
 	public JButton getBtnClearMemorized() {
 		return _btnClearMemorized;
 	}
-
+	/**
+	 * Getter for reset button
+	 * @return Returns _btnReset
+	 */
 	public JButton getBtnReset() {
 		return _btnReset;
 	}
-
+	/**
+	 * Getter for revert to the currently loaded file button
+	 * @return Returns _btnRevertToFile
+	 */
 	public JButton getBtnRevertToFile() {
 		return _btnRevertToFile;
 	}
-
+	/**
+	 * Getter for the file choosing window
+	 * @return Returns _fileChooser
+	 */
 	public JFileChooser getFileChooser() {
 		return _fileChooser;
 	}
-
+	/**
+	 * Getter for the current flash card JPanel
+	 * @return Returns _flashCardPanel
+	 */
 	public ViewFlashCardJPanel getFlashCardPanel() {
 		return _flashCardPanel;
 	}
-
+	/**
+	 * Getter for Working Deck Icon JPanel
+	 * @return Returns _workingDeckIconJPanel
+	 */
 	public ViewDeckIconJPanel getWorkingDeckIconJPanel() {
 		return _workingDeckIconJPanel;
 	}
-
+	/**
+	 * Getter for Memorized Deck Icon JPanel
+	 * @return Returns _memorizedDeckIconJPanel
+	 */
 	public ViewDeckIconJPanel getMemorizedDeckIconJPanel() {
 		return _memorizedDeckIconJPanel;
 	}
-	
+	/**
+	 * Getter for edit card JDialog
+	 * @return Returns _editCardJDialog
+	 */
 	public ViewEditCardJDialog getEditCardJDialog() {
 		return _editCardJDialog;
 	}

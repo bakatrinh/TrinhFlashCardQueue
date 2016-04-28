@@ -1,20 +1,46 @@
 import java.io.Serializable;
 
-// Class that stores multiple FlashCard objects, the cards are managed using the Queue model
-// Cards are added, removed, and manipulated using queue and dequeue methods.
-public class ModelFlashCardDeck implements Serializable {
-	private static final int DEFAULT_CAPACITY = 10;
-	private ModelFlashCard[] _deck;
-	private int _cardCounter;
-	private int _cardID;
 
+/**
+ * @author Trinh Nguyen
+ * @Discription Class that stores multiple FlashCard objects, the cards are managed using the Queue model Cards
+ * are added, removed, and manipulated using queue and dequeue methods.
+ */
+public class ModelFlashCardDeck implements Serializable {
+	/**
+	 * Initial memory size of new array deck
+	 */
+	private static final int DEFAULT_CAPACITY = 10;
+	/**
+	 * The array used to store all single flash cards
+	 */
+	private ModelFlashCard[] _deck;
+	/**
+	 * The total counts currently stored in _deck
+	 */
+	private int _cardCounter;
+	/**
+	 * The current ID that was last assigned to a newly created
+	 * card. This value will never decrement since it is
+	 * required for card searching and deletion. There
+	 * cannot be two cards with the same ID
+	 */
+	private int _cardID;
+	
+	/**
+	 * The constructor. Creates a new _deck array with default
+	 * memory capacity and sets _cardCounter and _cardID to 0
+	 */
 	public ModelFlashCardDeck() {
 		_deck = new ModelFlashCard[DEFAULT_CAPACITY];
 		_cardCounter = 0;
 		_cardID = 0;
 	}
 	
-	// Used by other classes to check if the current deck is empty
+	/**
+	 * Used by other classes to check if the current deck is empty
+	 * @return returns true if _cardCounter is 0, else returns false
+	 */
 	public boolean isEmpty() {
 		if (_cardCounter == 0) {
 			return true;
@@ -24,7 +50,11 @@ public class ModelFlashCardDeck implements Serializable {
 		}
 	}
 	
-	// Used to add new cards to the deck, also increases memory when needed
+	/**
+	 * Used to add new cards to the deck or to put back in old cards,
+	 * also increases memory when needed
+	 * @param card The card to be enqueued
+	 */
 	public void enqueue(ModelFlashCard card) {
 		if (_cardCounter == _deck.length) {
 			increaseCapacity(_cardCounter * 2);
@@ -33,12 +63,19 @@ public class ModelFlashCardDeck implements Serializable {
 		_cardCounter++;
 	}
 	
-	// Used by other classes to check the contents of the card first in line
+	/**
+	 * Used by other classes to check the contents of the card first in line
+	 * without dequeuing
+	 * @return Returns _deck[0]
+	 */
 	public ModelFlashCard peek() {
 		return _deck[0];
 	}
 
-	// Used to create actual new cards
+	/**
+	 * Used to create actual new cards by incrementing _cardID
+	 * @param The card to be added to the deck
+	 */
 	public void enqueueWithID(ModelFlashCard card) {
 		if (_cardCounter == _deck.length) {
 			increaseCapacity(_cardCounter * 2);
@@ -48,14 +85,20 @@ public class ModelFlashCardDeck implements Serializable {
 		_cardID++;
 	}
 	
-	// Used to remove the card in the front of the line
+	/**
+	 * Used to remove the card in the front of the line
+	 * @return Returns the card that was removed in case
+	 * it is currently being used to display on the GUI
+	 */
 	public ModelFlashCard dequeue() {
 		ModelFlashCard temp = _deck[0];
 		shiftDown();
 		return temp;
 	}
 	
-	// Called to shift all the FlashCards up whenever a card is dequeued
+	/**
+	 * Called to shift all the FlashCards up whenever a card is dequeued
+	 */
 	private void shiftDown() {
 		for (int i = 0; i < _cardCounter-1; i++) {
 			_deck[i] = _deck[i+1];
@@ -63,7 +106,10 @@ public class ModelFlashCardDeck implements Serializable {
 		_cardCounter--;
 	}
 	
-	// Increases the memory of the deck to allow the user to store more cards
+	/**
+	 * Increases the memory of the deck to allow the user to store additional cards
+	 * @param size
+	 */
 	private void increaseCapacity(int size) {
 		ModelFlashCard[] old = _deck;
 		_deck = new ModelFlashCard[size];
@@ -71,24 +117,35 @@ public class ModelFlashCardDeck implements Serializable {
 			_deck[i] = old[i];
 	}
 	
-	// Returns the number of cards in the current deck
+	/**
+	 * Returns the number of cards in the current deck
+	 * @return Returns _cardCounter
+	 */
 	public int getCardCounter() {
 		return _cardCounter;
 	}
 	
-	// Returns the ID of the card
+	/**
+	 * Returns the ID of the card
+	 * @return Returns _cardID
+	 */
 	public int getCardID() {
 		return _cardID;
 	}
 	
-	// Empties the deck by dequeue-ing every FlashCard
+	/**
+	 * Empties the deck by dequeuing every FlashCard. The deck still exist
+	 * in memory in case more cards are being added
+	 */
 	public void removeAll() {
 		while (_cardCounter > 0) {
 			dequeue();
 		}
 	}
 	
-	// Used by other classes to make enqueue the current card and dequeue until it is back to the beginning
+	/**
+	 * Used by other classes to make enqueue the current card and dequeue until it is back to the beginning
+	 */
 	public void enqueueBacktoCurrent() {
 		int cardCounter = _cardCounter;
 		cardCounter--;
@@ -100,7 +157,10 @@ public class ModelFlashCardDeck implements Serializable {
 		}
 	}
 	
-	// Used by other classes to make enqueue the current card and dequeue until it is the card after next in line
+	/**
+	 * Used by other classes to make enqueue the current card and
+	 * dequeue until it is the card after next in line
+	 */
 	public void enqueueBacktoNext() {
 		int cardCounter = _cardCounter;
 		cardCounter--;
@@ -110,7 +170,10 @@ public class ModelFlashCardDeck implements Serializable {
 		}
 	}
 	
-	// Used by other classes to make enqueue the current card and dequeue until it is the next card in line
+	/**
+	 * Used by other classes to make enqueue the current card and
+	 * dequeue until it is the next card in line
+	 */
 	public void enqueueBacktoFirst() {
 		int cardCounter = _cardCounter;
 		cardCounter--;
@@ -121,7 +184,10 @@ public class ModelFlashCardDeck implements Serializable {
 		}
 	}
 	
-	// Used to move the card from one deck to another
+	/**
+	 * Used to move the card from one deck to another
+	 * @param other The deck the current card will be transferred to
+	 */
 	public void transferCards(ModelFlashCardDeck other) {
 		while (!isEmpty()) {
 			ModelFlashCard temp = dequeue();
@@ -129,8 +195,11 @@ public class ModelFlashCardDeck implements Serializable {
 		}
 	}
 	
-	// When a card data is updated, this method cycles through the entire deck and update the deck on the
-	// corresponding card ID
+	/**
+	 * When a card data is updated, this method cycles through the entire deck and
+	 * update the deck on the corresponding card ID
+	 * @param card The card that was updated and to be saved onto the deck
+	 */
 	public void replaceCard(ModelFlashCard card) {
 		int cardCounter = _cardCounter;
 		ModelFlashCard current;
@@ -143,7 +212,10 @@ public class ModelFlashCardDeck implements Serializable {
 		}
 	}
 	
-	// Deletes the card with the matching ID and then returns to the card the user was previously on
+	/**
+	 * Deletes the card with the matching ID and then returns to the card the user was previously on
+	 * @param ID The ID of the card to be deleted
+	 */
 	public void deleteCard(int ID) {
 		int cardCounter = _cardCounter;
 		ModelFlashCard current;
@@ -155,7 +227,11 @@ public class ModelFlashCardDeck implements Serializable {
 		}
 	}
 	
-	// Used to copy the content of one FlashCardDeck to another
+	/**
+	 * Used to copy the content of one FlashCardDeck to another
+	 * @param otherDeck The deck that is being changed by having contents
+	 * copied onto it
+	 */
 	public void copyDeck(ModelFlashCardDeck otherDeck) {
 		removeAll();
 		int otherDeckCardCounter = otherDeck.getCardCounter();
