@@ -83,11 +83,11 @@ public class ControllerFlashCardQueueMain {
 	/**
 	 * Constructor, sets all attributes to default values. Creates blank default decks
 	 * for storing data and the GUI to display the information
-	 * @param topFrame reference to the main JFrame that will be storing all GUI components
+	 * @param mainJFrame reference to the main JFrame that will be storing all GUI components
 	 */
-	public ControllerFlashCardQueueMain(JFrame topFrame) {
+	public ControllerFlashCardQueueMain(JFrame mainJFrame) {
 		_allDecks = new ModelFlashCardAllDecks();
-		_mainScreenJPanel = new ViewMainScreenJPanel(this, topFrame);
+		_mainScreenJPanel = new ViewMainScreenJPanel(this, mainJFrame);
 		String OS = System.getProperty("os.name").toLowerCase();
 		if (OS.contains("mac")) {
 			HelperAppleQuitHandler.DoAppleQuit(this);
@@ -258,10 +258,10 @@ public class ControllerFlashCardQueueMain {
 			_mainScreenJPanel.getFlashCardPanel().setText(_currentCard.getFrontData(), true, _currentCard.getID());
 			_isChanged = false;
 			if (_file != null) {
-				_mainScreenJPanel.getTopFrame().setTitle(_file.getName());
+				_mainScreenJPanel.getMainJFrame().setTitle(_file.getName());
 			}
 			else {
-				_mainScreenJPanel.getTopFrame().setTitle("Untitled Deck");
+				_mainScreenJPanel.getMainJFrame().setTitle("Untitled Deck");
 			}
 		}
 		else {
@@ -445,8 +445,8 @@ public class ControllerFlashCardQueueMain {
 	 * Adds a "*" to the title if changes were made and not saved
 	 */
 	public void setFrameTitleUnsaved() {
-		if (!_mainScreenJPanel.getTopFrame().getTitle().contains("*")) {
-			_mainScreenJPanel.getTopFrame().setTitle(_mainScreenJPanel.getTopFrame().getTitle()+"*");
+		if (!_mainScreenJPanel.getMainJFrame().getTitle().contains("*")) {
+			_mainScreenJPanel.getMainJFrame().setTitle(_mainScreenJPanel.getMainJFrame().getTitle()+"*");
 		}
 	}
 
@@ -635,7 +635,7 @@ public class ControllerFlashCardQueueMain {
 			_isChanged = false;
 			_mainScreenJPanel.getBtnRevertToFile().setEnabled(false);
 			_mainScreenJPanel.getFlashCardPanel().drawTitle();
-			_mainScreenJPanel.getTopFrame().setTitle("Untitled Deck");
+			_mainScreenJPanel.getMainJFrame().setTitle("Untitled Deck");
 		}
 		else {
 			Object[] options = {"Save", "Don't Save", "Cancel"};
@@ -647,7 +647,7 @@ public class ControllerFlashCardQueueMain {
 				_isChanged = false;
 				_mainScreenJPanel.getBtnRevertToFile().setEnabled(false);
 				_mainScreenJPanel.getFlashCardPanel().drawTitle();
-				_mainScreenJPanel.getTopFrame().setTitle("Untitled Deck");
+				_mainScreenJPanel.getMainJFrame().setTitle("Untitled Deck");
 			} else if (response == JOptionPane.YES_OPTION) {
 				saveDeck();
 				newDeck();
@@ -662,7 +662,7 @@ public class ControllerFlashCardQueueMain {
 	 */
 	public void openDeck() {
 		if (!_isChanged) {
-			int returnVal = _mainScreenJPanel.getFileChooser().showOpenDialog(_mainScreenJPanel.getTopFrame());
+			int returnVal = _mainScreenJPanel.getFileChooser().showOpenDialog(_mainScreenJPanel.getMainJFrame());
 
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				_file = _mainScreenJPanel.getFileChooser().getSelectedFile();
@@ -674,7 +674,7 @@ public class ControllerFlashCardQueueMain {
 			int response = JOptionPane.showOptionDialog(null,
 					"Save changes?","", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 			if (response == JOptionPane.NO_OPTION) {
-				int returnVal = _mainScreenJPanel.getFileChooser().showOpenDialog(_mainScreenJPanel.getTopFrame());
+				int returnVal = _mainScreenJPanel.getFileChooser().showOpenDialog(_mainScreenJPanel.getMainJFrame());
 
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					_file = _mainScreenJPanel.getFileChooser().getSelectedFile();
@@ -726,7 +726,7 @@ public class ControllerFlashCardQueueMain {
 			if (_currentCard != null) {
 				resetEditCardWindow();
 			}
-			_mainScreenJPanel.getTopFrame().setTitle(_file.getName());
+			_mainScreenJPanel.getMainJFrame().setTitle(_file.getName());
 		}
 	}
 
@@ -789,14 +789,14 @@ public class ControllerFlashCardQueueMain {
 		_mainScreenJPanel.getBtnRevertToFile().setEnabled(true);
 		nextCard();
 		nextCard();
-		_mainScreenJPanel.getTopFrame().setTitle(_file.getName());
+		_mainScreenJPanel.getMainJFrame().setTitle(_file.getName());
 	}
 
 	/**
 	 * Ask the user for the location of where they want to save
 	 */
 	public void saveAsDeck() {
-		int returnVal = _mainScreenJPanel.getFileChooser().showSaveDialog(_mainScreenJPanel.getTopFrame());
+		int returnVal = _mainScreenJPanel.getFileChooser().showSaveDialog(_mainScreenJPanel.getMainJFrame());
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			_file = _mainScreenJPanel.getFileChooser().getSelectedFile();

@@ -100,11 +100,6 @@ public class ViewEditCardJDialog extends JDialog{
 	 */
 	private JButton _btnNewCard;
 	/**
-	 * A reference to the main JFrame this JDialog is tied to
-	 * Needed for centering this JDialog on the center of the JFrame
-	 */
-	private JFrame _topFrame;
-	/**
 	 * A reference to the main controller needed to call certain
 	 * methods when a button is pushed
 	 */
@@ -113,18 +108,17 @@ public class ViewEditCardJDialog extends JDialog{
 	/**
 	 * Constructor to set up the components in the JDialog
 	 * @param mainController Reference to main controller
-	 * @param topFrame Reference to the main JFrame
+	 * @param mainJFrame Reference to the main JFrame
 	 */
-	public ViewEditCardJDialog(ControllerFlashCardQueueMain mainController, JFrame topFrame) {
-		super(topFrame, "", Dialog.ModalityType.DOCUMENT_MODAL);
-		_topFrame = topFrame;
+	public ViewEditCardJDialog(ControllerFlashCardQueueMain mainController, JFrame mainJFrame) {
+		super(mainJFrame, "", Dialog.ModalityType.DOCUMENT_MODAL);
 		_mainController = mainController;
 		setResizable(false);
 		setModal(true);
 		setUndecorated(true);
 		pack();
 		setSize(new Dimension(310, 310));
-		setLocationRelativeTo(topFrame);
+		setLocationRelativeTo(mainJFrame);
 
 		_btnCancel = new JButton("Cancel");
 		_btnCancel.addActionListener(new ActionListener() {

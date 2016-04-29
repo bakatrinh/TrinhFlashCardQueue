@@ -11,6 +11,7 @@ import javax.swing.GroupLayout.Alignment;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.geom.Path2D;
+import java.awt.BorderLayout;
 
 /**
  * @author Trinh Nguyen
@@ -65,17 +66,14 @@ public class ViewDeckIconJPanel extends JPanel {
 	 */
 	public ViewDeckIconJPanel() {
 		_cardCount = 0;
-		setBackground(Color.WHITE);
-		setSize(new Dimension(100, 100));
+		setPreferredSize(new Dimension(100, 100));
+		setMinimumSize(new Dimension(100, 100));
+		setMaximumSize(new Dimension(100, 100));
+		setLayout(new BorderLayout(0, 0));
 		_isSelected = true;
 		_isHover = false;
 		_deckTitle = "";
 		_isSelectedString = "";
-		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout
-				.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGap(0, 96, Short.MAX_VALUE));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGap(0, 96, Short.MAX_VALUE));
-		setLayout(groupLayout);
 	}
 
 	/**
@@ -139,7 +137,7 @@ public class ViewDeckIconJPanel extends JPanel {
 		if (_isHover) {
 			g2d.setColor(new Color(31, 113, 189));
 		}
-		g2d.fillRect(2, 2, 96, 96);
+		g2d.fillRect(2, 2, super.getWidth()-4, super.getHeight()-4);
 		
 		// Some base cases on where to position the first few cards if the deck is small. The algorithm
 		// and positioning is the same for all deck sizes after 5
@@ -181,7 +179,7 @@ public class ViewDeckIconJPanel extends JPanel {
 		int thickness = 2;
 		Stroke oldStroke = g2d.getStroke();
 		g2d.setStroke(new BasicStroke(thickness));
-		g2d.drawRect(1, 1, 98, 98);
+		g2d.drawRect(1, 1, super.getWidth()-2, super.getHeight()-2);
 		g2d.setStroke(oldStroke);
 
 	}

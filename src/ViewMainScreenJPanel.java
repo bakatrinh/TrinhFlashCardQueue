@@ -4,7 +4,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
-import java.io.File;
+import java.awt.Dimension;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -14,8 +14,13 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.Dimension;
-
+import java.io.File;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Component;
+import javax.swing.Box;
+import java.awt.GridLayout;
+import javax.swing.BoxLayout;
 
 /**
  * @author Trinh Nguyen
@@ -66,7 +71,7 @@ public class ViewMainScreenJPanel extends JPanel{
 	/**
 	 * Make new deck button
 	 */
-	private JButton _btnNew;
+	private JButton _btnNewDeck;
 	/**
 	 * Reload the deck to the file button
 	 */
@@ -78,7 +83,7 @@ public class ViewMainScreenJPanel extends JPanel{
 	/**
 	 * The main JFrame this window is contained in
 	 */
-	private JFrame _topFrame;
+	private JFrame _mainJFrame;
 	/**
 	 * File browsing component
 	 */
@@ -96,7 +101,7 @@ public class ViewMainScreenJPanel extends JPanel{
 	 * Reference to the center JPanel that displays contents of the current
 	 * viewing card
 	 */
-	private ViewFlashCardJPanel _flashCardPanel;
+	private ViewFlashCardJPanel _centerJPanelFlashCard;
 	/**
 	 * Reference to the edit card JDialog window
 	 */
@@ -115,27 +120,23 @@ public class ViewMainScreenJPanel extends JPanel{
 	 * Constructor, links itself to main controller and main JFrame, makes a
 	 * new JDialog card editing window as well and then initializes all components
 	 * @param mainController Reference to the main controller
-	 * @param topFrame Reference to the main JFrame
+	 * @param mainJFrame Reference to the main JFrame
 	 */
-	public ViewMainScreenJPanel(ControllerFlashCardQueueMain mainController, JFrame topFrame) {
+	public ViewMainScreenJPanel(ControllerFlashCardQueueMain mainController, JFrame mainJFrame) {
 		_mainController = mainController;
-		_topFrame = topFrame;
-		_editCardJDialog = new ViewEditCardJDialog(_mainController, _topFrame);
-		initComponents();
-	}
-	
-	/**
-	 * Initializes each components and adds actionlistener to corresponding buttons
-	 */
-	private void initComponents() {
-		_topFrame.setTitle("Untitled Deck");
-		_topFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+		_mainJFrame = mainJFrame;
+		_editCardJDialog = new ViewEditCardJDialog(_mainController, _mainJFrame);
+		
+		setLayout(new BorderLayout(0, 0));
+		setBackground(Color.WHITE);
+		
+		_mainJFrame.setTitle("Untitled Deck");
+		_mainJFrame.addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				_mainController.confirmExit();
 			}
 		});
-
 
 		// Displays a file explorer window to allow the user to open or save files
 		_fileChooser = new JFileChooser(){
@@ -166,75 +167,23 @@ public class ViewMainScreenJPanel extends JPanel{
 		_fileChooser.setCurrentDirectory(workingDirectory);
 		_fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		_fileChooser.setFileFilter(new FileNameExtensionFilter("Trinh's FCQ Decks", "fcq"));
-
-		_btnOpen = new JButton("Open");
-		_btnOpen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				_mainController.openDeck();
-			}
-		});
-		_btnOpen.setFocusable(false);
-
-		_btnSave = new JButton("Save");
-		_btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				_mainController.saveDeck();
-			}
-		});
-		_btnSave.setFocusable(false);
-
-		_btnSaveAs = new JButton("Save As...");
-		_btnSaveAs.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				_mainController.saveAsDeck();
-			}
-		});
-		_btnSaveAs.setFocusable(false);
-
-		_btnReset = new JButton("Reset");
-		_btnReset.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				_mainController.resetDeck();
-			}
-		});
-		_btnReset.setEnabled(false);
-		_btnReset.setFocusable(false);
-
-		_btnNewCard = new JButton("New Card");
-		_btnNewCard.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				_mainController.addNewCardMainScreen();
-			}
-		});
-		_btnNewCard.setFocusable(false);
-
-		_btnEditCard = new JButton("Edit Card");
-		_btnEditCard.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				_mainController.popUpEditJDialog();
-			}
-		});
-		_btnEditCard.setEnabled(false);
-		_btnEditCard.setFocusable(false);
-
-		_btnClearMemorized = new JButton("Restore");
-		_btnClearMemorized.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				_mainController.restore();
-			}
-		});
-		_btnClearMemorized.setEnabled(false);
-		_btnClearMemorized.setFocusable(false);
-
-		_btnMoveToMemorized = new JButton("Memorized");
-		_btnMoveToMemorized.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				_mainController.moveCurrentCardToOrFromMain();
-			}
-		});
-		_btnMoveToMemorized.setEnabled(false);
-		_btnMoveToMemorized.setFocusable(false);
-
+		
+		JPanel _middleJPanelCenter = new JPanel();
+		add(_middleJPanelCenter, BorderLayout.CENTER);
+		_middleJPanelCenter.setLayout(new BorderLayout(0, 0));
+		
+		JPanel _middleJPanelSouth = new JPanel();
+		_middleJPanelCenter.add(_middleJPanelSouth, BorderLayout.SOUTH);
+		_middleJPanelSouth.setLayout(new GridLayout(1, 0, 0, 0));
+		
+		JPanel _middleJPanelSouthInner = new JPanel();
+		_middleJPanelSouth.add(_middleJPanelSouthInner);
+		_middleJPanelSouthInner.setLayout(new BorderLayout(0, 0));
+		
+		JPanel _middleJPanelSouthInnerCenter = new JPanel();
+		_middleJPanelSouthInner.add(_middleJPanelSouthInnerCenter);
+		_middleJPanelSouthInnerCenter.setLayout(new GridLayout(0, 3, 0, 0));
+		
 		_btnFlip = new JButton("Flip");
 		_btnFlip.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -243,7 +192,8 @@ public class ViewMainScreenJPanel extends JPanel{
 		});
 		_btnFlip.setEnabled(false);
 		_btnFlip.setFocusable(false);
-
+		_middleJPanelSouthInnerCenter.add(_btnFlip);
+		
 		_btnNext = new JButton("Next");
 		_btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -252,10 +202,33 @@ public class ViewMainScreenJPanel extends JPanel{
 		});
 		_btnNext.setEnabled(false);
 		_btnNext.setFocusable(false);
-
-		_flashCardPanel = new ViewFlashCardJPanel();
-		_flashCardPanel.drawTitle();
-		_flashCardPanel.addMouseListener(new MouseAdapter() {
+		_middleJPanelSouthInnerCenter.add(_btnNext);
+		
+		_btnMoveToMemorized = new JButton("Memorized");
+		_btnMoveToMemorized.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_mainController.moveCurrentCardToOrFromMain();
+			}
+		});
+		_btnMoveToMemorized.setEnabled(false);
+		_btnMoveToMemorized.setFocusable(false);
+		_middleJPanelSouthInnerCenter.add(_btnMoveToMemorized);
+		
+		Component verticalStrut_6 = Box.createVerticalStrut(5);
+		_middleJPanelSouthInner.add(verticalStrut_6, BorderLayout.NORTH);
+		
+		Component verticalStrut_7 = Box.createVerticalStrut(5);
+		_middleJPanelSouthInner.add(verticalStrut_7, BorderLayout.SOUTH);
+		
+		JPanel _middleJPanelCenterFlashCard = new JPanel();
+		_middleJPanelCenter.add(_middleJPanelCenterFlashCard, BorderLayout.CENTER);
+		
+		Component _middleJPanelTopStrut = Box.createVerticalStrut(20);
+		_middleJPanelCenter.add(_middleJPanelTopStrut, BorderLayout.NORTH);
+		
+		_centerJPanelFlashCard = new ViewFlashCardJPanel();
+		_centerJPanelFlashCard.drawTitle();
+		_centerJPanelFlashCard.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -263,17 +236,63 @@ public class ViewMainScreenJPanel extends JPanel{
 			}
 		});
 
-		setBackground(Color.WHITE);
-
-		_btnNew = new JButton("New");
-		_btnNew.addActionListener(new ActionListener() {
+		_middleJPanelCenter.add(_centerJPanelFlashCard, BorderLayout.CENTER);
+		
+		JPanel _leftJPanel = new JPanel();
+		add(_leftJPanel, BorderLayout.WEST);
+		_leftJPanel.setLayout(new BorderLayout(0, 0));
+		
+		JPanel _leftJPanelTop = new JPanel();
+		_leftJPanel.add(_leftJPanelTop, BorderLayout.NORTH);
+		_leftJPanelTop.setLayout(new BorderLayout(0, 0));
+		
+		JPanel _leftJPanelTopGrid = new JPanel();
+		
+		JPanel box1 = new JPanel();
+		box1.setLayout(new BorderLayout(0, 0));
+		box1.add(_leftJPanelTopGrid);
+		box1.setPreferredSize(new Dimension(110,190));
+		
+		_leftJPanelTop.add(box1, BorderLayout.CENTER);
+		_leftJPanelTopGrid.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		_btnNewDeck = new JButton("New Deck");
+		_btnNewDeck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				_mainController.newDeck();
 			}
 		});
-		_btnNew.setFocusable(false);
-
-		_btnRevertToFile = new JButton("Revert to File");
+		_btnNewDeck.setFocusable(false);
+		_leftJPanelTopGrid.add(_btnNewDeck);
+		
+		_btnOpen = new JButton("Open");
+		_btnOpen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_mainController.openDeck();
+			}
+		});
+		_btnOpen.setFocusable(false);
+		_leftJPanelTopGrid.add(_btnOpen);
+		
+		_btnSave = new JButton("Save");
+		_btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_mainController.saveDeck();
+			}
+		});
+		_btnSave.setFocusable(false);
+		_leftJPanelTopGrid.add(_btnSave);
+		
+		_btnSaveAs = new JButton("Save As...");
+		_btnSaveAs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_mainController.saveAsDeck();
+			}
+		});
+		_btnSaveAs.setFocusable(false);
+		_leftJPanelTopGrid.add(_btnSaveAs);
+		
+		_btnRevertToFile = new JButton("Revert To File");
 		_btnRevertToFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -291,7 +310,19 @@ public class ViewMainScreenJPanel extends JPanel{
 		});
 		_btnRevertToFile.setEnabled(false);
 		_btnRevertToFile.setFocusable(false);
-
+		_leftJPanelTopGrid.add(_btnRevertToFile);
+		
+		Component horizontalStrut_4 = Box.createHorizontalStrut(104);
+		_leftJPanelTopGrid.add(horizontalStrut_4);
+		
+		Component verticalStrut_4 = Box.createVerticalStrut(20);
+		_leftJPanelTop.add(verticalStrut_4, BorderLayout.NORTH);
+		
+		JPanel _leftJPanelBottom = new JPanel();
+		_leftJPanel.add(_leftJPanelBottom, BorderLayout.SOUTH);
+		_leftJPanelBottom.setLayout(new BorderLayout(0, 0));
+		
+		
 		_workingDeckIconJPanel = new ViewDeckIconJPanel();
 		_workingDeckIconJPanel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -310,10 +341,99 @@ public class ViewMainScreenJPanel extends JPanel{
 			}
 		});
 		_workingDeckIconJPanel.updateDeckStatusRepaint(_mainController.getAllDecks().getWorkingDeck(), _mainController.getCard());
-		_workingDeckIconJPanel.setSize(new Dimension(100, 100));
 		_workingDeckIconJPanel.setDeckTitle("Main Deck");
 		_workingDeckIconJPanel.setSelected(true);
 
+		_leftJPanelBottom.add(_workingDeckIconJPanel, BorderLayout.CENTER);
+		
+		Component verticalStrut = Box.createVerticalStrut(4);
+		_leftJPanelBottom.add(verticalStrut, BorderLayout.NORTH);
+		
+		Component horizontalStrut = Box.createHorizontalStrut(4);
+		_leftJPanelBottom.add(horizontalStrut, BorderLayout.WEST);
+		
+		Component verticalStrut_1 = Box.createVerticalStrut(4);
+		_leftJPanelBottom.add(verticalStrut_1, BorderLayout.SOUTH);
+		
+		Component horizontalStrut_1 = Box.createHorizontalStrut(4);
+		_leftJPanelBottom.add(horizontalStrut_1, BorderLayout.EAST);
+		
+		JPanel _rightJPanel = new JPanel();
+		add(_rightJPanel, BorderLayout.EAST);
+		_rightJPanel.setLayout(new BorderLayout(0, 0));
+		
+		JPanel _rightJPanelTop = new JPanel();
+		_rightJPanel.add(_rightJPanelTop, BorderLayout.NORTH);
+		_rightJPanelTop.setLayout(new BorderLayout(0, 0));
+		
+		JPanel _rightJPanelTopGrid = new JPanel();
+		
+		JPanel box2 = new JPanel();
+		box2.setLayout(new BorderLayout(0, 0));
+		box2.add(_rightJPanelTopGrid);
+		box2.setPreferredSize(new Dimension(110,190));
+		
+		_rightJPanelTop.add(box2, BorderLayout.CENTER);
+		_rightJPanelTopGrid.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		_btnNewCard = new JButton("New Card");
+		_btnNewCard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_mainController.addNewCardMainScreen();
+			}
+		});
+		_btnNewCard.setFocusable(false);
+		_rightJPanelTopGrid.add(_btnNewCard);
+		
+		_btnEditCard = new JButton("Edit Card");
+		_btnEditCard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_mainController.popUpEditJDialog();
+			}
+		});
+		_btnEditCard.setEnabled(false);
+		_btnEditCard.setFocusable(false);
+		_rightJPanelTopGrid.add(_btnEditCard);
+		
+		_btnReset = new JButton("Reset");
+		_btnReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_mainController.resetDeck();
+			}
+		});
+		_btnReset.setEnabled(false);
+		_btnReset.setFocusable(false);
+		_rightJPanelTopGrid.add(_btnReset);
+		
+		_btnClearMemorized = new JButton("Restore");
+		_btnClearMemorized.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_mainController.restore();
+			}
+		});
+		_btnClearMemorized.setEnabled(false);
+		_btnClearMemorized.setFocusable(false);
+		_rightJPanelTopGrid.add(_btnClearMemorized);
+		
+		_btnExit = new JButton("Exit");
+		_btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				_mainController.confirmExit();
+			}
+		});
+		_btnExit.setFocusable(false);
+		_rightJPanelTopGrid.add(_btnExit);
+		
+		Component horizontalStrut_5 = Box.createHorizontalStrut(140);
+		_rightJPanelTopGrid.add(horizontalStrut_5);
+		
+		Component verticalStrut_5 = Box.createVerticalStrut(20);
+		_rightJPanelTop.add(verticalStrut_5, BorderLayout.NORTH);
+		
+		JPanel _rightJPanelBottom = new JPanel();
+		_rightJPanel.add(_rightJPanelBottom, BorderLayout.SOUTH);
+		_rightJPanelBottom.setLayout(new BorderLayout(0, 0));
+		
 		_memorizedDeckIconJPanel = new ViewDeckIconJPanel();
 		_memorizedDeckIconJPanel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -331,108 +451,35 @@ public class ViewMainScreenJPanel extends JPanel{
 				_memorizedDeckIconJPanel.setMouseHover(false);
 			}
 		});
-		_workingDeckIconJPanel.updateDeckStatusRepaint(_mainController.getAllDecks().getWorkingDeck(), _mainController.getCard());
-		_memorizedDeckIconJPanel.setSize(new Dimension(100, 100));
+		
+		_memorizedDeckIconJPanel.updateDeckStatusRepaint(_mainController.getAllDecks().getMemorizedDeck(), _mainController.getCard());
 		_memorizedDeckIconJPanel.setDeckTitle("Memorized Deck");
 		_memorizedDeckIconJPanel.setSelected(false);
-
+		
+		_rightJPanelBottom.add(_memorizedDeckIconJPanel, BorderLayout.CENTER);
+		
+		Component verticalStrut_2 = Box.createVerticalStrut(4);
+		_rightJPanelBottom.add(verticalStrut_2, BorderLayout.NORTH);
+		
+		Component horizontalStrut_2 = Box.createHorizontalStrut(4);
+		_rightJPanelBottom.add(horizontalStrut_2, BorderLayout.EAST);
+		
+		Component horizontalStrut_3 = Box.createHorizontalStrut(4);
+		_rightJPanelBottom.add(horizontalStrut_3, BorderLayout.WEST);
+		
+		Component verticalStrut_3 = Box.createVerticalStrut(4);
+		_rightJPanelBottom.add(verticalStrut_3, BorderLayout.SOUTH);
+		
 		_workingDeckIconJPanel.updateDeckIcon(_mainController.getAllDecks().getWorkingDeck().getCardCounter());
 		_memorizedDeckIconJPanel.updateDeckIcon(_mainController.getAllDecks().getMemorizedDeck().getCardCounter());
-
-		_btnExit = new JButton("Exit");
-		_btnExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				_mainController.confirmExit();
-			}
-		});
-		_btnExit.setFocusable(false);
-		
-		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(
-				groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(_btnRevertToFile, GroupLayout.PREFERRED_SIZE, 108, Short.MAX_VALUE)
-								.addComponent(_workingDeckIconJPanel, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
-								.addComponent(_btnNew, GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
-								.addComponent(_btnOpen, GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
-								.addComponent(_btnSave, GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
-								.addComponent(_btnSaveAs, GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE))
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(_flashCardPanel, GroupLayout.PREFERRED_SIZE, 430, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED))
-								.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-										.addComponent(_btnFlip, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
-										.addGap(33)
-										.addComponent(_btnNext, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
-										.addGap(18)
-										.addComponent(_btnMoveToMemorized, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
-										.addGap(18)))
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(_btnClearMemorized, GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
-								.addComponent(_btnEditCard, GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
-								.addComponent(_btnNewCard, GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
-								.addComponent(_memorizedDeckIconJPanel, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
-								.addComponent(_btnReset, GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
-								.addComponent(_btnExit, GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE))
-						.addContainerGap())
-				);
-		groupLayout.setVerticalGroup(
-				groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(groupLayout.createSequentialGroup()
-						.addContainerGap(28, Short.MAX_VALUE)
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-										.addGap(20)
-										.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-												.addGroup(groupLayout.createSequentialGroup()
-														.addComponent(_btnOpen)
-														.addPreferredGap(ComponentPlacement.RELATED)
-														.addComponent(_btnSave)
-														.addPreferredGap(ComponentPlacement.RELATED)
-														.addComponent(_btnSaveAs)
-														.addPreferredGap(ComponentPlacement.RELATED)
-														.addComponent(_btnRevertToFile)
-														.addGap(104))
-												.addGroup(groupLayout.createSequentialGroup()
-														.addComponent(_flashCardPanel, GroupLayout.PREFERRED_SIZE, 230, GroupLayout.PREFERRED_SIZE)
-														.addGap(18)))
-										.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-												.addComponent(_btnMoveToMemorized)
-												.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-														.addComponent(_btnFlip)
-														.addComponent(_btnNext))))
-								.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-										.addGroup(groupLayout.createSequentialGroup()
-												.addComponent(_btnNew)
-												.addPreferredGap(ComponentPlacement.RELATED, 187, Short.MAX_VALUE)
-												.addComponent(_workingDeckIconJPanel, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
-										.addGroup(groupLayout.createSequentialGroup()
-												.addComponent(_btnNewCard)
-												.addPreferredGap(ComponentPlacement.RELATED)
-												.addComponent(_btnEditCard)
-												.addPreferredGap(ComponentPlacement.RELATED)
-												.addComponent(_btnReset)
-												.addPreferredGap(ComponentPlacement.RELATED)
-												.addComponent(_btnClearMemorized)
-												.addPreferredGap(ComponentPlacement.RELATED)
-												.addComponent(_btnExit)
-												.addGap(52)
-												.addComponent(_memorizedDeckIconJPanel, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))))
-						.addGap(52))
-				);
-		setLayout(groupLayout);
 	}
 	
 	/**
 	 * Getter for main JFrame
-	 * @return Returns _topFrame
+	 * @return Returns _mainJFrame
 	 */
-	public JFrame getTopFrame() {
-		return _topFrame;
+	public JFrame getMainJFrame() {
+		return _mainJFrame;
 	}
 	/**
 	 * Getter for next card button
@@ -502,7 +549,7 @@ public class ViewMainScreenJPanel extends JPanel{
 	 * @return Returns _flashCardPanel
 	 */
 	public ViewFlashCardJPanel getFlashCardPanel() {
-		return _flashCardPanel;
+		return _centerJPanelFlashCard;
 	}
 	/**
 	 * Getter for Working Deck Icon JPanel
