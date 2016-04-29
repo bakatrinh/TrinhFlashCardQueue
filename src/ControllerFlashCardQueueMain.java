@@ -39,9 +39,13 @@ public class ControllerFlashCardQueueMain {
 	 */
 	private ViewMainScreenJPanel _mainScreenJPanel;
 	/**
-	 * Holds old card text data, reverts to this if cancel button is pushed during editing
+	 * Holds old card front text data, reverts to this if cancel button is pushed during editing
 	 */
-	private String _tempOldText;
+	private String _tempOldFrontText;
+	/**
+	 * Holds old card back text data, reverts to this if cancel button is pushed during editing
+	 */
+	private String _tempOldBackText;
 	/**
 	 * Holds old card color data, reverts to this if cancel button is pushed during editing
 	 */
@@ -258,7 +262,8 @@ public class ControllerFlashCardQueueMain {
 	 */
 	public void cancelEditChanges() {
 		if (!_isChanged) {
-			_currentCard.setFrontData(_tempOldText);
+			_currentCard.setFrontData(_tempOldFrontText);
+			_currentCard.setBackData(_tempOldBackText);
 			_currentCard.setColors(_tempOldColor);
 			enqueueBackToCurrent();
 			_mainScreenJPanel.getFlashCardPanel().setColor(_tempOldColor);
@@ -272,7 +277,8 @@ public class ControllerFlashCardQueueMain {
 			}
 		}
 		else {
-			_currentCard.setFrontData(_tempOldText);
+			_currentCard.setFrontData(_tempOldFrontText);
+			_currentCard.setBackData(_tempOldBackText);
 			_currentCard.setColors(_tempOldColor);
 			enqueueBackToCurrent();
 			_mainScreenJPanel.getFlashCardPanel().setColor(_tempOldColor);
@@ -309,7 +315,8 @@ public class ControllerFlashCardQueueMain {
 	public void popUpEditJDialog() {
 		if (_currentCard != null) {
 			resetEditCardWindow();
-			_tempOldText = _currentCard.getFrontData();
+			_tempOldFrontText = _currentCard.getFrontData();
+			_tempOldBackText = _currentCard.getBackData();
 			_tempOldColor = _currentCard.getCardColor();
 			_mainScreenJPanel.getEditCardJDialog().setVisible(true);
 			resetEditCardWindow();
@@ -398,7 +405,8 @@ public class ControllerFlashCardQueueMain {
 	 */
 	public void quickAddNewCard() {
 		addNewCardMainScreen();
-		_tempOldText = _currentCard.getFrontData();
+		_tempOldFrontText = _currentCard.getFrontData();
+		_tempOldBackText = _currentCard.getBackData();
 		_tempOldColor = _currentCard.getCardColor();
 	}
 
@@ -946,14 +954,22 @@ public class ControllerFlashCardQueueMain {
 	}
 
 	/**
-	 * Sets the color being selected by the user. It is stored in case the user turns on the
-	 * option to keep all new card colors the same
-	 * @param color The current color that the user selected.
+	 * Used by ViewEditCardColorButton to only change color but not JTextPane text
+	 * @param color The current color that the user selected
 	 */
 	public void setColor(Color color) {
 		_chosenColor = color;
 		_currentCard.setColors(_chosenColor);
-		enqueueBackToCurrent();
+		if (_editFront) {
+			_currentCard.setFrontData(_mainScreenJPanel.getEditCardJDialog().getTextPane().getText());
+			enqueueBackToCurrent();
+		}
+		else {
+			_currentCard.setBackData(_mainScreenJPanel.getEditCardJDialog().getTextPane().getText());
+			enqueueBackToCurrent();
+			_editFront = true;
+			nextButtonEditJDialog();
+		}
 		_mainScreenJPanel.getEditCardJDialog().getTextPane().setBackground(_chosenColor);
 		_mainScreenJPanel.getEditCardJDialog().getTextPane().requestFocus();
 	}

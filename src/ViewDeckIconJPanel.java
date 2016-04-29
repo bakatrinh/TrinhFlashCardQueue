@@ -6,12 +6,9 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import javax.swing.JPanel;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.geom.Path2D;
-import java.awt.BorderLayout;
 
 /**
  * @author Trinh Nguyen

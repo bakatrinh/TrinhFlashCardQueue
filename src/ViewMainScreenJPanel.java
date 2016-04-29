@@ -173,7 +173,7 @@ public class ViewMainScreenJPanel extends JPanel{
 		
 		JPanel _middleJPanelSouthInnerCenter = new JPanel();
 		_middleJPanelSouthInner.add(_middleJPanelSouthInnerCenter);
-		_middleJPanelSouthInnerCenter.setLayout(new GridLayout(0, 3, 0, 0));
+		_middleJPanelSouthInnerCenter.setLayout(new GridLayout(0, 3, 1, 1));
 		
 		_btnFlip = new JButton("Flip");
 		_btnFlip.addActionListener(new ActionListener() {
@@ -245,7 +245,7 @@ public class ViewMainScreenJPanel extends JPanel{
 		box1.setPreferredSize(new Dimension(110,190));
 		
 		_leftJPanelTop.add(box1, BorderLayout.CENTER);
-		_leftJPanelTopGrid.setLayout(new GridLayout(0, 1, 0, 0));
+		_leftJPanelTopGrid.setLayout(new GridLayout(0, 1, 1, 1));
 		
 		_btnNewDeck = new JButton("New Deck");
 		_btnNewDeck.addActionListener(new ActionListener() {

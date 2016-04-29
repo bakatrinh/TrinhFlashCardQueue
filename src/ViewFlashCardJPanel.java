@@ -7,9 +7,6 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.Component;
 import javax.swing.Box;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
 
