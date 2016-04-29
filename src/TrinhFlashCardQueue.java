@@ -21,7 +21,6 @@ public class TrinhFlashCardQueue {
 				main.add(mainController.getMainScreen());
 				main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				main.pack();
-				//main.setSize(670, 350);
 				main.setResizable(false);
 				main.setLocationRelativeTo(null);
 				main.setVisible(true);

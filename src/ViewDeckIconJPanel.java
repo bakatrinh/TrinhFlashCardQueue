@@ -69,7 +69,6 @@ public class ViewDeckIconJPanel extends JPanel {
 		setPreferredSize(new Dimension(100, 100));
 		setMinimumSize(new Dimension(100, 100));
 		setMaximumSize(new Dimension(100, 100));
-		setLayout(new BorderLayout(0, 0));
 		_isSelected = true;
 		_isHover = false;
 		_deckTitle = "";

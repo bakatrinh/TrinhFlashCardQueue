@@ -79,7 +79,11 @@ public class ControllerFlashCardQueueMain {
 	 * Used by the editing JDialog window to determine when to show text for front or back of _currentCard
 	 */
 	private boolean _editFront;
-
+	/**
+	 * Returns true if there is a message or window currently opened. Used to
+	 * disable hotkeys
+	 */
+	private boolean _popUpMessages;
 	/**
 	 * Constructor, sets all attributes to default values. Creates blank default decks
 	 * for storing data and the GUI to display the information
@@ -99,13 +103,14 @@ public class ControllerFlashCardQueueMain {
 		_isChanged = false;
 		_newFile = true;
 		_editFront = true;
+		_popUpMessages = false;
 
 		KeyboardFocusManager.getCurrentKeyboardFocusManager()
 		.addKeyEventDispatcher(new KeyEventDispatcher() {
 			@Override
 			public boolean dispatchKeyEvent(KeyEvent e) {
 				if (e.getID() == KeyEvent.KEY_RELEASED) {
-					if (!_mainScreenJPanel.getEditCardJDialog().isVisible())
+					if (!_mainScreenJPanel.getEditCardJDialog().isVisible() && !_popUpMessages)
 					{
 						if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 							nextCard();
@@ -220,10 +225,11 @@ public class ControllerFlashCardQueueMain {
 	 * Empties the Memorized Deck and Working Deck and recopies all cards from the Main Deck
 	 */
 	public void resetDeck() {
+		_popUpMessages = true;
 		int response = JOptionPane.showConfirmDialog(null, "Restore all memorized cards back to Main Deck and sort cards in order by ID?", "",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (response == JOptionPane.NO_OPTION) {
-
+			_popUpMessages = false;
 		} else if (response == JOptionPane.YES_OPTION) {
 			_allDecks.getWorkingDeck().copyDeck(_allDecks.getMainDeck());
 			_allDecks.getMemorizedDeck().removeAll();
@@ -241,8 +247,9 @@ public class ControllerFlashCardQueueMain {
 			}
 		}
 		else if (response == JOptionPane.CLOSED_OPTION) {
-
+			
 		}
+		_popUpMessages = true;
 	}
 
 	/**
@@ -454,6 +461,7 @@ public class ControllerFlashCardQueueMain {
 	 * Dequeue all the cards in memorized deck and move them over to the working deck
 	 */
 	public void restore() {
+		_popUpMessages = true;
 		int response = JOptionPane.showConfirmDialog(null, "Move all memorized cards in the Memorized Deck back into Main Deck?", "",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (response == JOptionPane.NO_OPTION) {
@@ -483,6 +491,7 @@ public class ControllerFlashCardQueueMain {
 		else if (response == JOptionPane.CLOSED_OPTION) {
 
 		}
+		_popUpMessages = false;
 	}
 
 	/**
@@ -638,6 +647,7 @@ public class ControllerFlashCardQueueMain {
 			_mainScreenJPanel.getMainJFrame().setTitle("Untitled Deck");
 		}
 		else {
+			_popUpMessages = true;
 			Object[] options = {"Save", "Don't Save", "Cancel"};
 			int response = JOptionPane.showOptionDialog(null,
 					"Save changes?","", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
@@ -652,6 +662,7 @@ public class ControllerFlashCardQueueMain {
 				saveDeck();
 				newDeck();
 			}
+			_popUpMessages = false;
 		}
 
 
@@ -662,6 +673,7 @@ public class ControllerFlashCardQueueMain {
 	 */
 	public void openDeck() {
 		if (!_isChanged) {
+			_popUpMessages = true;
 			int returnVal = _mainScreenJPanel.getFileChooser().showOpenDialog(_mainScreenJPanel.getMainJFrame());
 
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -670,6 +682,7 @@ public class ControllerFlashCardQueueMain {
 			}
 		}
 		else {
+			_popUpMessages = true;
 			Object[] options = {"Save", "Don't Save", "Cancel"};
 			int response = JOptionPane.showOptionDialog(null,
 					"Save changes?","", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
@@ -684,6 +697,7 @@ public class ControllerFlashCardQueueMain {
 				saveDeck();
 				openDeck();
 			}
+			_popUpMessages = false;
 		}
 	}
 
@@ -784,20 +798,20 @@ public class ControllerFlashCardQueueMain {
 				System.err.println("Error closing file. (Serialize)");
 			}
 		}
-		_isChanged = false;
-		_newFile = false;
 		_mainScreenJPanel.getBtnRevertToFile().setEnabled(true);
 		nextCard();
 		nextCard();
 		_mainScreenJPanel.getMainJFrame().setTitle(_file.getName());
+		_isChanged = false;
+		_newFile = false;
 	}
 
 	/**
 	 * Ask the user for the location of where they want to save
 	 */
 	public void saveAsDeck() {
+		_popUpMessages = true;
 		int returnVal = _mainScreenJPanel.getFileChooser().showSaveDialog(_mainScreenJPanel.getMainJFrame());
-
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			_file = _mainScreenJPanel.getFileChooser().getSelectedFile();
 			if (FilenameUtils.getExtension(_file.getName()).equalsIgnoreCase("fcq")) {
@@ -808,6 +822,7 @@ public class ControllerFlashCardQueueMain {
 			}
 			save();
 		}
+		_popUpMessages = false;
 	}
 
 	/**
@@ -818,6 +833,7 @@ public class ControllerFlashCardQueueMain {
 			System.exit(0);
 		}
 		else {
+			_popUpMessages = true;
 			Object[] options = {"Save", "Don't Save", "Cancel"};
 			int response = JOptionPane.showOptionDialog(null,
 					"Save changes?","", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
@@ -828,11 +844,13 @@ public class ControllerFlashCardQueueMain {
 				confirmExit();
 			}
 			else {
+				_popUpMessages = false;
 				String OS = System.getProperty("os.name").toLowerCase();
 				if (OS.contains("mac")) {
 
 				}
 			}
+			_popUpMessages = false;
 		}
 	}
 	
@@ -1052,5 +1070,12 @@ public class ControllerFlashCardQueueMain {
 	 */
 	public ViewMainScreenJPanel getMainScreen() {
 		return _mainScreenJPanel;
+	}
+	/**
+	 * Getter method for currently loaded file
+	 * @return Returns _file
+	 */
+	public File getFile() {
+		return _file;
 	}
 }

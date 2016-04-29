@@ -5,22 +5,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.Dimension;
-import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import java.io.File;
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.Component;
 import javax.swing.Box;
 import java.awt.GridLayout;
-import javax.swing.BoxLayout;
 
 /**
  * @author Trinh Nguyen
@@ -94,10 +89,6 @@ public class ViewMainScreenJPanel extends JPanel{
 	 */
 	private ControllerFlashCardQueueMain _mainController;
 	/**
-	 * Reference to any file that is loaded or saved to
-	 */
-	private File _file;
-	/**
 	 * Reference to the center JPanel that displays contents of the current
 	 * viewing card
 	 */
@@ -143,8 +134,8 @@ public class ViewMainScreenJPanel extends JPanel{
 			@Override
 			public void approveSelection(){
 				File f = getSelectedFile();
-				if (!f.equals(_file)) {
-					if(f.exists() && getDialogType() == SAVE_DIALOG){
+				if (f.equals(_mainController.getFile())) {
+					if(getDialogType() == SAVE_DIALOG){
 						int result = JOptionPane.showConfirmDialog(this,"Overwrite file?","Existing file",JOptionPane.YES_NO_CANCEL_OPTION);
 						switch(result){
 						case JOptionPane.YES_OPTION:
@@ -161,7 +152,7 @@ public class ViewMainScreenJPanel extends JPanel{
 					}
 				}
 				super.approveSelection();
-			}        
+			}
 		};
 		File workingDirectory = new File(System.getProperty("user.dir"));
 		_fileChooser.setCurrentDirectory(workingDirectory);
