@@ -16,12 +16,12 @@ public class TrinhFlashCardQueue {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				JFrame main = new JFrame();
-				ControllerFlashCardQueueMain mainController = new ControllerFlashCardQueueMain(main);
+				ControllerMain mainController = new ControllerMain(main);
 				main.setLayout(new BorderLayout());
 				main.add(mainController.getMainScreen());
 				main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				main.pack();
-				main.setResizable(false);
+				main.setResizable(true);
 				main.setLocationRelativeTo(null);
 				main.setVisible(true);
 			}

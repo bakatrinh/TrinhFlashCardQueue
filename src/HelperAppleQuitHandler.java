@@ -9,7 +9,7 @@ import com.apple.eawt.QuitResponse;
  * confirmation before closing the program
  */
 public class HelperAppleQuitHandler {
-	public static void DoAppleQuit(ControllerFlashCardQueueMain mainController) {
+	public static void DoAppleQuit(ControllerMain mainController) {
 		Application a = Application.getApplication();
 		a.setQuitHandler(new QuitHandler() {
 			@Override

@@ -171,10 +171,11 @@ public class ModelFlashCardDeck implements Serializable {
 	}
 	
 	/**
-	 * Used by other classes to make enqueue the current card and
-	 * dequeue until it is the next card in line
+	 * Used by other classes to enqueue until 
+	 * the next card is the previous card of the current card
+	 * Used for the previous card JButton
 	 */
-	public void enqueueBacktoFirst() {
+	public void enqueueBacktoPrevious() {
 		int cardCounter = _cardCounter;
 		cardCounter--;
 		cardCounter--;

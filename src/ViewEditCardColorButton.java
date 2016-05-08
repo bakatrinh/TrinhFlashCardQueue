@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
  * Custom JPanel to be used as Color buttons by ViewEditCardJDialog
  */
 public class ViewEditCardColorButton extends JPanel {
-	public ViewEditCardColorButton(ControllerFlashCardQueueMain mainController, Color buttonColor) {
+	public ViewEditCardColorButton(ControllerMain mainController, Color buttonColor) {
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		setBackground(buttonColor);
 		setLayout(new GridLayout(1, 1, 0, 0));

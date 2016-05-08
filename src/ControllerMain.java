@@ -24,7 +24,7 @@ import org.apache.commons.io.FilenameUtils;
  * @Discription controller class that controls the navigation, addition, editing, saving,
  * and organization f the Flash Card data
  */
-public class ControllerFlashCardQueueMain {
+public class ControllerMain {
 
 	/**
 	 * Stores all the flash card decks used in the program. This is what gets saved and loaded from file
@@ -93,7 +93,7 @@ public class ControllerFlashCardQueueMain {
 	 * for storing data and the GUI to display the information
 	 * @param mainJFrame reference to the main JFrame that will be storing all GUI components
 	 */
-	public ControllerFlashCardQueueMain(JFrame mainJFrame) {
+	public ControllerMain(JFrame mainJFrame) {
 		_allDecks = new ModelFlashCardAllDecks();
 		_mainScreenJPanel = new ViewMainScreenJPanel(this, mainJFrame);
 		String OS = System.getProperty("os.name").toLowerCase();
@@ -118,6 +118,10 @@ public class ControllerFlashCardQueueMain {
 					{
 						if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 							nextCard();
+							return false;
+						}
+						if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+							previousCard();
 							return false;
 						}
 						if (e.getKeyCode() == KeyEvent.VK_SPACE) {
@@ -195,6 +199,65 @@ public class ControllerFlashCardQueueMain {
 					_allDecks.getMemorizedDeck().enqueue(_currentCard);
 				}
 				_currentCard = null;
+				_currentCard = _allDecks.getMemorizedDeck().dequeue();
+				_mainScreenJPanel.getFlashCardPanel().drawNormalCard(_currentCard.getCardColor(), _currentCard.getFrontData(), _currentCard.getID());
+			}
+			else {
+				if (_currentCard == null)
+				{
+					_mainScreenJPanel.getFlashCardPanel().drawEmpty();
+					_mainScreenJPanel.getBtnNext().setEnabled(false);
+					_mainScreenJPanel.getBtnFlip().setEnabled(false);
+				}
+			}
+			_mainScreenJPanel.getWorkingDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getWorkingDeck(), null);
+			_mainScreenJPanel.getMemorizedDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getMemorizedDeck(), _currentCard);
+		}
+		if (_currentCard != null) {
+			resetEditCardWindow();
+		}
+		_front = true;
+		refreshButtonsAndCounters();
+		setFrameTitleUnsaved();
+		_isChanged = true;
+	}
+	
+	/**
+	 * Used by controller to dequeue the deck and display that card
+	 */
+	public void previousCard() {
+		if (_viewingWorkingDeck) {
+			if (!_allDecks.getWorkingDeck().isEmpty()) {
+				_mainScreenJPanel.getBtnNext().setEnabled(true);
+				_mainScreenJPanel.getBtnFlip().setEnabled(true);
+				if (_currentCard != null) {
+					_allDecks.getWorkingDeck().enqueue(_currentCard);
+				}
+				_currentCard = null;
+				_allDecks.getWorkingDeck().enqueueBacktoPrevious();
+				_currentCard = _allDecks.getWorkingDeck().dequeue();
+				_mainScreenJPanel.getFlashCardPanel().drawNormalCard(_currentCard.getCardColor(), _currentCard.getFrontData(), _currentCard.getID());
+			}
+			else {
+				if (_currentCard == null)
+				{
+					_mainScreenJPanel.getFlashCardPanel().drawEmpty();
+					_mainScreenJPanel.getBtnNext().setEnabled(false);
+					_mainScreenJPanel.getBtnFlip().setEnabled(false);
+				}
+			}
+			_mainScreenJPanel.getWorkingDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getWorkingDeck(), _currentCard);
+			_mainScreenJPanel.getMemorizedDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getMemorizedDeck(), null);
+		}
+		else {
+			if (!_allDecks.getMemorizedDeck().isEmpty()) {
+				_mainScreenJPanel.getBtnNext().setEnabled(true);
+				_mainScreenJPanel.getBtnFlip().setEnabled(true);
+				if (_currentCard != null) {
+					_allDecks.getMemorizedDeck().enqueue(_currentCard);
+				}
+				_currentCard = null;
+				_allDecks.getMemorizedDeck().enqueueBacktoPrevious();
 				_currentCard = _allDecks.getMemorizedDeck().dequeue();
 				_mainScreenJPanel.getFlashCardPanel().drawNormalCard(_currentCard.getCardColor(), _currentCard.getFrontData(), _currentCard.getID());
 			}
@@ -377,7 +440,7 @@ public class ControllerFlashCardQueueMain {
 	 * Used to make the current card enqueue until it is the next in line
 	 */
 	public void enqueueBackToFirst() {
-		_allDecks.getWorkingDeck().enqueueBacktoFirst();
+		_allDecks.getWorkingDeck().enqueueBacktoPrevious();
 		nextCard();
 	}
 
@@ -773,14 +836,14 @@ public class ControllerFlashCardQueueMain {
 				_allDecks.getWorkingDeck().enqueue(_currentCard);
 			}
 			_currentCard = null;
-			_allDecks.getWorkingDeck().enqueueBacktoFirst();
+			_allDecks.getWorkingDeck().enqueueBacktoPrevious();
 		}
 		else {
 			if (_currentCard != null) {
 				_allDecks.getMemorizedDeck().enqueue(_currentCard);
 			}
 			_currentCard = null;
-			_allDecks.getMemorizedDeck().enqueueBacktoFirst();
+			_allDecks.getMemorizedDeck().enqueueBacktoPrevious();
 		}
 
 		ObjectOutputStream outStream = null;

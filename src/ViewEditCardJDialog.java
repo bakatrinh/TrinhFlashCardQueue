@@ -99,14 +99,14 @@ public class ViewEditCardJDialog extends JDialog{
 	 * A reference to the main controller needed to call certain
 	 * methods when a button is pushed
 	 */
-	private ControllerFlashCardQueueMain _mainController;
+	private ControllerMain _mainController;
 	
 	/**
 	 * Constructor to set up the components in the JDialog
 	 * @param mainController Reference to main controller
 	 * @param mainJFrame Reference to the main JFrame
 	 */
-	public ViewEditCardJDialog(ControllerFlashCardQueueMain mainController, JFrame mainJFrame) {
+	public ViewEditCardJDialog(ControllerMain mainController, JFrame mainJFrame) {
 		super(mainJFrame, "", Dialog.ModalityType.DOCUMENT_MODAL);
 		_mainController = mainController;
 		setResizable(false);

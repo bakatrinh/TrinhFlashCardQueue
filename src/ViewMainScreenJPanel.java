@@ -88,7 +88,7 @@ public class ViewMainScreenJPanel extends JPanel{
 	 * Reference to the main controller that manage the appearance of this
 	 * JPanel
 	 */
-	private ControllerFlashCardQueueMain _mainController;
+	private ControllerMain _mainController;
 	/**
 	 * Reference to the center JPanel that displays contents of the current
 	 * viewing card
@@ -114,7 +114,7 @@ public class ViewMainScreenJPanel extends JPanel{
 	 * @param mainController Reference to the main controller
 	 * @param mainJFrame Reference to the main JFrame
 	 */
-	public ViewMainScreenJPanel(ControllerFlashCardQueueMain mainController, JFrame mainJFrame) {
+	public ViewMainScreenJPanel(ControllerMain mainController, JFrame mainJFrame) {
 		_mainController = mainController;
 		_mainJFrame = mainJFrame;
 		_editCardJDialog = new ViewEditCardJDialog(_mainController, _mainJFrame);
@@ -192,10 +192,10 @@ public class ViewMainScreenJPanel extends JPanel{
 		_middleJPanelSouthInner.add(_middleJPanelSouthInnerCenter);
 		_middleJPanelSouthInnerCenter.setLayout(new GridLayout(0, 3, 1, 1));
 		
-		_btnFlip = new JButton("Flip");
+		_btnFlip = new JButton("Previous");
 		_btnFlip.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				_mainController.flip();
+				_mainController.previousCard();
 			}
 		});
 		_btnFlip.setEnabled(false);
