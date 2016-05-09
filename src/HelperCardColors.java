@@ -4,16 +4,21 @@ import java.util.List;
 
 /**
  * @author Trinh Nguyen
- * @Discription Every time a new card is made, the main controller uses this class to obtain a color.
+ * <br>Description: Every time a new card is made, the main controller uses this class to obtain a color.
  * The modulus operator is used to allow the colors to be chosen in order based on the
  * current card count of the main deck
  */
 public class HelperCardColors {
 	/**
-	 * Stored colors from the constructor
+	 * Stored colors from the constructor.
 	 */
 	private ArrayList<Color> _colors;
 	
+	/**
+	 * Constructors that creates a new _colors ArrayList and add
+	 * a couple of Color object to the array.
+	 * <br>Complexity: O(1)
+	 */
 	public HelperCardColors() {
 		_colors = new ArrayList<Color>();
 		
@@ -56,7 +61,8 @@ public class HelperCardColors {
 	
 	/**
 	 * Obtains a color from one of the colors stored in the array, uses modulus operator
-	 * to obtain the color in order
+	 * to obtain the color in order.
+	 * <br>Complexity: O(1)
 	 * @param cardCounter the current card count of whichever deck is being worked on
 	 * @return returns a color in order based on the int given
 	 */

@@ -5,8 +5,9 @@ import com.apple.eawt.QuitHandler;
 import com.apple.eawt.QuitResponse;
 
 /**
- * @Discription This class is needed to make OSX command+q shortcut ask for
- * confirmation before closing the program
+ * <br>Description: This class is needed to make OSX command+q shortcut ask for
+ * confirmation before closing the program.
+ * <br>Complexity: O(1)
  */
 public class HelperAppleQuitHandler {
 	public static void DoAppleQuit(ControllerMain mainController) {

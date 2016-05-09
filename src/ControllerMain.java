@@ -21,76 +21,77 @@ import org.apache.commons.io.FilenameUtils;
  * @author Trinh Nguyen
  * @version 1.0
  * 
- * @Discription controller class that controls the navigation, addition, editing, saving,
- * and organization f the Flash Card data
+ * <br>Description: controller class that controls the navigation, addition, editing, saving,
+ * and organization of the Flash Card data
  */
 public class ControllerMain {
 
 	/**
-	 * Stores all the flash card decks used in the program. This is what gets saved and loaded from file
+	 * Stores all the flash card decks used in the program. This is what gets saved and loaded from file.
 	 */
 	private ModelFlashCardAllDecks _allDecks;
 	/**
-	 * Stores the data of the current card being displayed
+	 * Stores the data of the current card being displayed.
 	 */
 	private ModelFlashCard _currentCard;
 	/**
-	 * The main GUI that controls all visual components
+	 * The main GUI that controls all visual components.
 	 */
 	private ViewMainScreenJPanel _mainScreenJPanel;
 	/**
-	 * Holds old card front text data, reverts to this if cancel button is pushed during editing
+	 * Holds old card front text data, reverts to this if cancel button is pushed during editing.
 	 */
 	private String _tempOldFrontText;
 	/**
-	 * Holds old card back text data, reverts to this if cancel button is pushed during editing
+	 * Holds old card back text data, reverts to this if cancel button is pushed during editing.
 	 */
 	private String _tempOldBackText;
 	/**
-	 * Holds old card color data, reverts to this if cancel button is pushed during editing
+	 * Holds old card color data, reverts to this if cancel button is pushed during editing.
 	 */
 	private Color _tempOldColor;
 	/**
-	 * Holds the color that all new cards will be created by if _colorLock is true
+	 * Holds the color that all new cards will be created by if _colorLock is true.
 	 */
 	private Color _chosenColor;
 	/**
-	 * Stores the file being opened or saved to
+	 * Stores the file being opened or saved into.
 	 */
 	private File _file;
 	/**
-	 * Returns true if the card is currently showing data of the front of the card
+	 * Returns true if the card is currently showing data of the front of the card.
 	 */
 	private boolean _front;
 	/**
-	 * Returns true if the user is currently viewing the working deck and not the memorized deck
+	 * Returns true if the user is currently viewing the main deck and not the memorized deck.
 	 */
-	private boolean _viewingWorkingDeck;
+	private boolean _viewingMainDeck;
 	/**
-	 * Returns true if the user made some changes to the deck. Used by different methods to
+	 * Returns true if the user made some changes to the deck. Used by different methods to.
 	 * confirm to the user if they want to save.
 	 */
 	private boolean _isChanged;
 	/**
-	 * Returns true if the deck is currently a new deck and was not loaded from a file
+	 * Returns true if the deck is currently a new deck and was not loaded from a file.
 	 */
 	private boolean _newFile;
 	/**
-	 * Returns true if the user wants all new cards created to have the same color
+	 * Returns true if the user wants all new cards created to have the same color.
 	 */
 	private boolean _colorLock;
 	/**
-	 * Used by the editing JDialog window to determine when to show text for front or back of _currentCard
+	 * Used by the editing JDialog window to determine when to show text for front or back of _currentCard.
 	 */
 	private boolean _editFront;
 	/**
 	 * Returns true if there is a message or window currently opened. Used to
-	 * disable hotkeys
+	 * disable hotkeys.
 	 */
 	private boolean _popUpMessages;
 	/**
 	 * Constructor, sets all attributes to default values. Creates blank default decks
-	 * for storing data and the GUI to display the information
+	 * for storing data and the GUI to display the information.
+	 * <br>Complexity: O(1)
 	 * @param mainJFrame reference to the main JFrame that will be storing all GUI components
 	 */
 	public ControllerMain(JFrame mainJFrame) {
@@ -102,7 +103,7 @@ public class ControllerMain {
 		}
 		_currentCard = null;
 		_front = true;
-		_viewingWorkingDeck = true;
+		_viewingMainDeck = true;
 		_colorLock = false;
 		_isChanged = false;
 		_newFile = true;
@@ -133,16 +134,16 @@ public class ControllerMain {
 							return false;
 						}
 						if (e.getKeyCode() == KeyEvent.VK_TAB) {
-							if (_viewingWorkingDeck) {
+							if (_viewingMainDeck) {
 								switchToMemorized();
 							}
 							else {
-								switchToWorkingDeck();
+								switchToMainDeck();
 							}
 							return false;
 						}
 						if (e.getKeyCode() == KeyEvent.VK_N) {
-							if (_viewingWorkingDeck) {
+							if (_viewingMainDeck) {
 								addNewCardMainScreen();
 							}
 							return false;
@@ -166,18 +167,20 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Used by controller to dequeue the deck and display that card
+	 * Used by controller to dequeue the deck and display that card.
+	 * <br>Complexity: O(N). The enqueue and dequeue itself is O(1) but repainting
+	 * the deck icon to visually represent the changes is O(1)
 	 */
 	public void nextCard() {
-		if (_viewingWorkingDeck) {
-			if (!_allDecks.getWorkingDeck().isEmpty()) {
+		if (_viewingMainDeck) {
+			if (!_allDecks.getMainDeck().isEmpty()) {
 				_mainScreenJPanel.getBtnNext().setEnabled(true);
 				_mainScreenJPanel.getBtnFlip().setEnabled(true);
 				if (_currentCard != null) {
-					_allDecks.getWorkingDeck().enqueue(_currentCard);
+					_allDecks.getMainDeck().enqueue(_currentCard);
 				}
 				_currentCard = null;
-				_currentCard = _allDecks.getWorkingDeck().dequeue();
+				_currentCard = _allDecks.getMainDeck().dequeue();
 				_mainScreenJPanel.getFlashCardPanel().drawNormalCard(_currentCard.getCardColor(), _currentCard.getFrontData(), _currentCard.getID());
 			}
 			else {
@@ -188,7 +191,7 @@ public class ControllerMain {
 					_mainScreenJPanel.getBtnFlip().setEnabled(false);
 				}
 			}
-			_mainScreenJPanel.getWorkingDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getWorkingDeck(), _currentCard);
+			_mainScreenJPanel.getMainDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getMainDeck(), _currentCard);
 			_mainScreenJPanel.getMemorizedDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getMemorizedDeck(), null);
 		}
 		else {
@@ -210,7 +213,7 @@ public class ControllerMain {
 					_mainScreenJPanel.getBtnFlip().setEnabled(false);
 				}
 			}
-			_mainScreenJPanel.getWorkingDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getWorkingDeck(), null);
+			_mainScreenJPanel.getMainDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getMainDeck(), null);
 			_mainScreenJPanel.getMemorizedDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getMemorizedDeck(), _currentCard);
 		}
 		if (_currentCard != null) {
@@ -223,19 +226,20 @@ public class ControllerMain {
 	}
 	
 	/**
-	 * Used by controller to dequeue the deck and display that card
+	 * Used by controller to dequeue the deck and display that card.
+	 * <br>Complexity: O(N)
 	 */
 	public void previousCard() {
-		if (_viewingWorkingDeck) {
-			if (!_allDecks.getWorkingDeck().isEmpty()) {
+		if (_viewingMainDeck) {
+			if (!_allDecks.getMainDeck().isEmpty()) {
 				_mainScreenJPanel.getBtnNext().setEnabled(true);
 				_mainScreenJPanel.getBtnFlip().setEnabled(true);
 				if (_currentCard != null) {
-					_allDecks.getWorkingDeck().enqueue(_currentCard);
+					_allDecks.getMainDeck().enqueue(_currentCard);
 				}
 				_currentCard = null;
-				_allDecks.getWorkingDeck().enqueueBacktoPrevious();
-				_currentCard = _allDecks.getWorkingDeck().dequeue();
+				_allDecks.getMainDeck().enqueueBacktoPrevious();
+				_currentCard = _allDecks.getMainDeck().dequeue();
 				_mainScreenJPanel.getFlashCardPanel().drawNormalCard(_currentCard.getCardColor(), _currentCard.getFrontData(), _currentCard.getID());
 			}
 			else {
@@ -246,7 +250,7 @@ public class ControllerMain {
 					_mainScreenJPanel.getBtnFlip().setEnabled(false);
 				}
 			}
-			_mainScreenJPanel.getWorkingDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getWorkingDeck(), _currentCard);
+			_mainScreenJPanel.getMainDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getMainDeck(), _currentCard);
 			_mainScreenJPanel.getMemorizedDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getMemorizedDeck(), null);
 		}
 		else {
@@ -269,7 +273,7 @@ public class ControllerMain {
 					_mainScreenJPanel.getBtnFlip().setEnabled(false);
 				}
 			}
-			_mainScreenJPanel.getWorkingDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getWorkingDeck(), null);
+			_mainScreenJPanel.getMainDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getMainDeck(), null);
 			_mainScreenJPanel.getMemorizedDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getMemorizedDeck(), _currentCard);
 		}
 		if (_currentCard != null) {
@@ -282,14 +286,17 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Used by other classes to update the card in the main deck with new changes
+	 * Used by other classes to update the card in the main deck with new changes.
+	 * <br>Complexity: O(N)
 	 */
 	public void updateCard() {
-		_allDecks.getMainDeck().replaceCard(_currentCard);
+		_allDecks.getCompleteDeck().replaceCard(_currentCard);
 	}
 
 	/**
-	 * Empties the Memorized Deck and Working Deck and recopies all cards from the Main Deck
+	 * Empties the Memorized Deck and Main Deck and recopies all cards from the Complete Deck.
+	 * So that the cards appear in the the order that the they were created.
+	 * <br>Complexity: O(N)
 	 */
 	public void resetDeck() {
 		_popUpMessages = true;
@@ -298,13 +305,13 @@ public class ControllerMain {
 		if (response == JOptionPane.NO_OPTION) {
 			_popUpMessages = false;
 		} else if (response == JOptionPane.YES_OPTION) {
-			_allDecks.getWorkingDeck().copyDeck(_allDecks.getMainDeck());
+			_allDecks.getMainDeck().copyDeck(_allDecks.getCompleteDeck());
 			_allDecks.getMemorizedDeck().removeAll();
 			_currentCard = null;
 			_mainScreenJPanel.getBtnMoveToMemorized().setText("Memorized");
-			_mainScreenJPanel.getWorkingDeckIconJPanel().setSelected(true);
+			_mainScreenJPanel.getMainDeckIconJPanel().setSelected(true);
 			_mainScreenJPanel.getMemorizedDeckIconJPanel().setSelected(false);
-			_viewingWorkingDeck = true;
+			_viewingMainDeck = true;
 			_mainScreenJPanel.getBtnNewCard().setEnabled(true);
 			_isChanged = true;
 			setFrameTitleUnsaved();
@@ -321,7 +328,11 @@ public class ControllerMain {
 
 	/**
 	 * Used by FlashCardJDialog when the user hits the cancel button. This restores the data as it was before
-	 * Any changes was made
+	 * Any changes was made.
+	 * <br>Complexity: O(N). enqueueBackToCurrent is O(N). enqueueBackToCurrent is required
+	 * because text and color changes while the Edit Card JDialog window is opened need to
+	 * be instantly reflected in the DeckIconJPanel. When cancelEditChanges() is performed,
+	 * the changes need to be reverted.
 	 */
 	public void cancelEditChanges() {
 		if (!_isChanged) {
@@ -353,7 +364,8 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Used by other methods and class to give access to the current card being shown to the user
+	 * Used by other methods and class to give access to the current card being shown to the user.
+	 * <br>Complexity: O(1)
 	 * @return Returns the current card that is being shown to the user
 	 */
 	public ModelFlashCard getCard() {
@@ -361,19 +373,22 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Permanently removes the card from the Main deck and Working deck
+	 * Permanently removes the card from the main deck and the complete deck.
+	 * <br>Complexity: O(N). Deleting a card from the complete deck requires searching
+	 * through the deck, deleting, and shifting.
 	 */
 	public void deleteFlashCard() {
 		int deleteID = _currentCard.getID();
 		_currentCard = null;
-		_allDecks.getMainDeck().deleteCard(deleteID);
+		_allDecks.getCompleteDeck().deleteCard(deleteID);
 		_isChanged = true;
 		setFrameTitleUnsaved();
 		nextCard();
 	}
 
 	/**
-	 * Makes the editing JDialog visible with correct data based on the deck being worked on
+	 * Makes the editing JDialog visible with correct data based on the deck being worked on.
+	 * <br>Complexity: O(1)
 	 */
 	public void popUpEditJDialog() {
 		if (_currentCard != null) {
@@ -387,7 +402,8 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Flips the card
+	 * Flips the card.
+	 * <br>Complexity: O(1)
 	 */
 	public void flip() {
 		if (_currentCard != null) {
@@ -403,7 +419,8 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Used by other methods to tell the program if new cards will have the same color
+	 * Setter method. Used by other methods to tell the program if new cards will have the same color.
+	 * <br>Complexity: O(1)
 	 * @param isColorLock Returns true if the "same color for new card" check box is checked, else return false
 	 */
 	public void setColorLock(boolean isColorLock) {
@@ -411,13 +428,15 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Used to enqueue the current card until it is back to the current card being displaeyed
+	 * Used to enqueue the current card until it is back to the current card being displayed.
+	 * This is required for saving changes.
+	 * <br>Complexity: O(N)
 	 */
 	public void enqueueBackToCurrent() {
-		if (_viewingWorkingDeck) {
-			_allDecks.getWorkingDeck().enqueue(_currentCard);
+		if (_viewingMainDeck) {
+			_allDecks.getMainDeck().enqueue(_currentCard);
 			_currentCard = null;
-			_allDecks.getWorkingDeck().enqueueBacktoNext();
+			_allDecks.getMainDeck().enqueueBacktoNext();
 		}
 		else {
 			_allDecks.getMemorizedDeck().enqueue(_currentCard);
@@ -429,24 +448,27 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Used to make the current card enqueue until it is the next next one in line
+	 * Used to make the current card enqueue until it is the next next one in line.
+	 * <br>Complexity: O(N)
 	 */
 	public void enqueueBackToNext() {
-		_allDecks.getWorkingDeck().enqueueBacktoNext();
+		_allDecks.getMainDeck().enqueueBacktoNext();
 		nextCard();
 	}
 
 	/**
-	 * Used to make the current card enqueue until it is the next in line
+	 * Used to make the current card enqueue until it is the next in line.
+	 * <br>Complexity: O(N)
 	 */
 	public void enqueueBackToFirst() {
-		_allDecks.getWorkingDeck().enqueueBacktoPrevious();
+		_allDecks.getMainDeck().enqueueBacktoPrevious();
 		nextCard();
 	}
 
 	/**
 	 * Used by fileOpener to set the current deck to the one chosen. Once deck is loaded, nextCard() is
-	 * automatically called
+	 * automatically called.
+	 * <br>Complexity: O(1)
 	 * @param newDeck reference to the file that contains the deck the user wants to load
 	 */
 	public void newDeck(ModelFlashCardAllDecks newDeck) {
@@ -456,15 +478,17 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Used to restore color to what the card color would be if it was not locked
+	 * Used to restore color to what the card color would be if it was not locked.
+	 * <br>Complexity: O(1)
 	 * @return Returns a color from HelperCardColors based on the index of the main deck
 	 */
 	public Color unlockColor() {
-		return new HelperCardColors().getColor(_allDecks.getMainDeck().getCardCounter()-1);
+		return new HelperCardColors().getColor(_allDecks.getCompleteDeck().getCardCounter()-1);
 	}
 
 	/**
-	 * Used to create new cards and update the FlashCardJPanel to that of the new card
+	 * Used by EditCardJDialog to create new cards and update the FlashCardJPanel to that of the new card.
+	 * <br>Complexity: O(N). addNewCardMainScreen is O(N)
 	 */
 	public void quickAddNewCard() {
 		addNewCardMainScreen();
@@ -474,7 +498,8 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Used by other methods and class to determine if changes were made
+	 * Setter method used by other methods and class to determine if changes were made.
+	 * <br>Complexity: O(1)
 	 * @param isChanged if the current deck has been changed, make isChanged = true,
 	 * else isChanged = false
 	 */
@@ -483,7 +508,8 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Returns true if the deck has been changed
+	 * Getter method that returns true if the deck has been changed.
+	 * <br>Complexity: O(1)
 	 * @return returns true if the deck has been modified, else returns false
 	 */
 	public boolean getIsChanged() {
@@ -491,26 +517,28 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Adds a new card and sets the appropriate data
+	 * Adds a new card and sets the appropriate data.
+	 * <br>Complexity: O(N). The adding of the card itself is O(1) but
+	 * DeckIconJPanel needs to repainted to reflect changes which is O(N)
 	 */
 	public void addNewCardMainScreen() {
 		if (_currentCard != null) {
-			_allDecks.getWorkingDeck().enqueue(_currentCard);
+			_allDecks.getMainDeck().enqueue(_currentCard);
 		}
 		_currentCard = null;
 
 		if (!_colorLock) {
-			_currentCard = new ModelFlashCard(new HelperCardColors().getColor(_allDecks.getMainDeck().getCardCounter()), _allDecks.getMainDeck().getCardID());
+			_currentCard = new ModelFlashCard(new HelperCardColors().getColor(_allDecks.getCompleteDeck().getCardCounter()), _allDecks.getCompleteDeck().getCardID());
 		}
 		else {
-			_currentCard = new ModelFlashCard(_chosenColor, _allDecks.getMainDeck().getCardID());
+			_currentCard = new ModelFlashCard(_chosenColor, _allDecks.getCompleteDeck().getCardID());
 		}
 		_currentCard.setFrontData("New Card #"+(_currentCard.getID()+1)+" (front)<br /><br />Right Click to Edit");
 		_currentCard.setBackData("New Card #"+(_currentCard.getID()+1)+" (back)<br /><br />Right Click to Edit");
+		_allDecks.getCompleteDeck().enqueueWithID(_currentCard);
 		_allDecks.getMainDeck().enqueueWithID(_currentCard);
-		_allDecks.getWorkingDeck().enqueueWithID(_currentCard);
 		_currentCard = null;
-		_allDecks.getWorkingDeck().enqueueBacktoNext();
+		_allDecks.getMainDeck().enqueueBacktoNext();
 		_isChanged = true;
 		setFrameTitleUnsaved();
 		nextCard();
@@ -520,7 +548,8 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Adds a "*" to the title if changes were made and not saved
+	 * Adds a "*" to the title if changes were made and not saved.
+	 * <br>Complexity: O(1)
 	 */
 	public void setFrameTitleUnsaved() {
 		if (!_mainScreenJPanel.getMainJFrame().getTitle().contains("*")) {
@@ -529,7 +558,8 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Dequeue all the cards in memorized deck and move them over to the working deck
+	 * Dequeue all the cards in memorized deck and move them over to the main deck.
+	 * <br>Complexity: O(N)
 	 */
 	public void restore() {
 		_popUpMessages = true;
@@ -538,12 +568,12 @@ public class ControllerMain {
 		if (response == JOptionPane.NO_OPTION) {
 
 		} else if (response == JOptionPane.YES_OPTION) {
-			if (_viewingWorkingDeck) {
-				_allDecks.getMemorizedDeck().transferCards(_allDecks.getWorkingDeck());
+			if (_viewingMainDeck) {
+				_allDecks.getMemorizedDeck().transferCards(_allDecks.getMainDeck());
 				if (_currentCard == null) {
 					nextCard();
 				}
-				_mainScreenJPanel.getWorkingDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getWorkingDeck(), _currentCard);
+				_mainScreenJPanel.getMainDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getMainDeck(), _currentCard);
 				_mainScreenJPanel.getMemorizedDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getMemorizedDeck(), null);
 				refreshButtonsAndCounters();
 			}
@@ -552,9 +582,9 @@ public class ControllerMain {
 					_allDecks.getMemorizedDeck().enqueue(_currentCard);
 					_currentCard = null;
 				}
-				_allDecks.getMemorizedDeck().transferCards(_allDecks.getWorkingDeck());
+				_allDecks.getMemorizedDeck().transferCards(_allDecks.getMainDeck());
 				nextCard();
-				_mainScreenJPanel.getWorkingDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getWorkingDeck(), null);
+				_mainScreenJPanel.getMainDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getMainDeck(), null);
 				_mainScreenJPanel.getMemorizedDeckIconJPanel().updateDeckStatusRepaint(_allDecks.getMemorizedDeck(), null);
 			}
 			_isChanged = true;
@@ -566,38 +596,40 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Called every time the user clicks on the Memorized Deck pile
+	 * Called every time the user clicks on the Memorized Deck pile.
+	 * <br>Complexity: O(N) since nextCard() is O(N)
 	 */
 	public void switchToMemorized() {
-		if (_viewingWorkingDeck) {
+		if (_viewingMainDeck) {
 			_mainScreenJPanel.getBtnMoveToMemorized().setText("Not Memorized");
 			if (_currentCard != null) {
-				_allDecks.getWorkingDeck().enqueue(_currentCard);
+				_allDecks.getMainDeck().enqueue(_currentCard);
 			}
-			_allDecks.getWorkingDeck().enqueueBacktoNext();
+			_allDecks.getMainDeck().enqueueBacktoNext();
 			_currentCard = null;
-			_mainScreenJPanel.getWorkingDeckIconJPanel().setSelected(false);
+			_mainScreenJPanel.getMainDeckIconJPanel().setSelected(false);
 			_mainScreenJPanel.getMemorizedDeckIconJPanel().setSelected(true);
-			_viewingWorkingDeck = false;
+			_viewingMainDeck = false;
 			_mainScreenJPanel.getBtnNewCard().setEnabled(false);
 			nextCard();
 		}
 	}
 
 	/**
-	 * Called every time the user clicks on the working deck pile
+	 * Called every time the user clicks on the main deck pile.
+	 * <br>Complexity: O(N) since nextCard() is O(N)
 	 */
-	public void switchToWorkingDeck() {
-		if (!_viewingWorkingDeck) {
+	public void switchToMainDeck() {
+		if (!_viewingMainDeck) {
 			_mainScreenJPanel.getBtnMoveToMemorized().setText("Memorized");
 			if (_currentCard != null) {
 				_allDecks.getMemorizedDeck().enqueue(_currentCard);
 			}
 			_allDecks.getMemorizedDeck().enqueueBacktoNext();
 			_currentCard = null;
-			_mainScreenJPanel.getWorkingDeckIconJPanel().setSelected(true);
+			_mainScreenJPanel.getMainDeckIconJPanel().setSelected(true);
 			_mainScreenJPanel.getMemorizedDeckIconJPanel().setSelected(false);
-			_viewingWorkingDeck = true;
+			_viewingMainDeck = true;
 			_mainScreenJPanel.getBtnNewCard().setEnabled(true);
 			nextCard();
 		}
@@ -605,9 +637,10 @@ public class ControllerMain {
 
 	/**
 	 * Used to move cards into Memorized pile or out of it
+	 * <br>Complexity: O(N) since nextCard() is O(N)
 	 */
 	public void moveCurrentCardToOrFromMain() {
-		if (_viewingWorkingDeck) {
+		if (_viewingMainDeck) {
 			if (_currentCard != null) {
 				_allDecks.getMemorizedDeck().enqueue(_currentCard);
 				_currentCard = null;
@@ -616,7 +649,7 @@ public class ControllerMain {
 		}
 		else {
 			if (_currentCard != null) {
-				_allDecks.getWorkingDeck().enqueue(_currentCard);
+				_allDecks.getMainDeck().enqueue(_currentCard);
 				_currentCard = null;
 			}
 			nextCard();
@@ -627,18 +660,19 @@ public class ControllerMain {
 
 	/**
 	 * Refreshes the buttons to enable or disable based on what the user is allowed to do.
-	 * Updates different components to represent the Flash Card Deck data
+	 * Updates different components to represent the Flash Card Deck data.
+	 * <br>Complexity: O(N) because updateDeckIcon() is O(N)
 	 */
 	public void refreshButtonsAndCounters() {
-		if (_viewingWorkingDeck) {
+		if (_viewingMainDeck) {
 			if (_currentCard == null) {
-				_mainScreenJPanel.getWorkingDeckIconJPanel().updateDeckIcon(_allDecks.getWorkingDeck().getCardCounter());
+				_mainScreenJPanel.getMainDeckIconJPanel().updateDeckIcon(_allDecks.getMainDeck().getCardCounter());
 				_mainScreenJPanel.getMemorizedDeckIconJPanel().updateDeckIcon(_allDecks.getMemorizedDeck().getCardCounter());
 				_mainScreenJPanel.getBtnMoveToMemorized().setEnabled(false);
 				_mainScreenJPanel.getBtnEditCard().setEnabled(false);
 			}
 			else {
-				_mainScreenJPanel.getWorkingDeckIconJPanel().updateDeckIcon(_allDecks.getWorkingDeck().getCardCounter()+1);
+				_mainScreenJPanel.getMainDeckIconJPanel().updateDeckIcon(_allDecks.getMainDeck().getCardCounter()+1);
 				_mainScreenJPanel.getMemorizedDeckIconJPanel().updateDeckIcon(_allDecks.getMemorizedDeck().getCardCounter());
 				_mainScreenJPanel.getBtnMoveToMemorized().setEnabled(true);
 				_mainScreenJPanel.getBtnEditCard().setEnabled(true);
@@ -652,7 +686,7 @@ public class ControllerMain {
 		}
 		else {
 			if (_currentCard == null) {
-				_mainScreenJPanel.getWorkingDeckIconJPanel().updateDeckIcon(_allDecks.getWorkingDeck().getCardCounter());
+				_mainScreenJPanel.getMainDeckIconJPanel().updateDeckIcon(_allDecks.getMainDeck().getCardCounter());
 				_mainScreenJPanel.getMemorizedDeckIconJPanel().updateDeckIcon(_allDecks.getMemorizedDeck().getCardCounter());
 				_mainScreenJPanel.getBtnMoveToMemorized().setEnabled(false);
 				_mainScreenJPanel.getBtnEditCard().setEnabled(false);
@@ -664,13 +698,13 @@ public class ControllerMain {
 				}
 			}
 			else {
-				_mainScreenJPanel.getWorkingDeckIconJPanel().updateDeckIcon(_allDecks.getWorkingDeck().getCardCounter());
+				_mainScreenJPanel.getMainDeckIconJPanel().updateDeckIcon(_allDecks.getMainDeck().getCardCounter());
 				_mainScreenJPanel.getMemorizedDeckIconJPanel().updateDeckIcon(_allDecks.getMemorizedDeck().getCardCounter()+1);
 				_mainScreenJPanel.getBtnMoveToMemorized().setEnabled(true);
 				_mainScreenJPanel.getBtnEditCard().setEnabled(true);
 			}
 		}
-		if (_allDecks.getMainDeck().isEmpty()) {
+		if (_allDecks.getCompleteDeck().isEmpty()) {
 			_mainScreenJPanel.getBtnReset().setEnabled(false);
 		}
 		else {
@@ -679,17 +713,19 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Used by other classes and method to determine if the user is on the WorkingDeck
-	 * @return returns True if the user is currently viewing the working deck, else returns False (user is viewing
+	 * Used by other classes and method to determine if the user is on the main deck.
+	 * <br>Complexity: O(1)
+	 * @return returns True if the user is currently viewing the main deck, else returns False (user is viewing
 	 * memorized deck)
 	 */
-	public boolean getIsViewingWorkingDeck() {
-		return _viewingWorkingDeck;
+	public boolean getIsViewingMainDeck() {
+		return _viewingMainDeck;
 	}
 
 	/**
 	 * Sets the current deck to the deck specified. If no deck (allDecks is null) is specified,
-	 * then a new deck is made
+	 * then a new deck is made.
+	 * <br>Complexity: O(1) if a new deck is made. O(N) if loading from a deck file.
 	 * @param allDecks reference to the deck loaded by the File, if allDecks is null, a new deck is
 	 * created instead.
 	 */
@@ -701,11 +737,12 @@ public class ControllerMain {
 		else {
 			newDeck(allDecks);
 		}
-		switchToWorkingDeck();
+		switchToMainDeck();
 	}
 
 	/**
-	 * Makes a new deck, ask for confirmation if changes were made
+	 * Makes a new deck, ask for confirmation if changes were made.
+	 * <br>Complexity: O(1)
 	 */
 	public void newDeck() {
 
@@ -740,7 +777,8 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Opens the file that has deck data
+	 * Opens the file that has deck data.
+	 * <br>Complexity: O(N) since open() is O(N)
 	 */
 	public void openDeck() {
 		if (!_isChanged) {
@@ -774,6 +812,7 @@ public class ControllerMain {
 
 	/**
 	 * Actual open method used by OpenDeck and other methods
+	 * <br>Complexity: O(N) sine nextCard() is O(N)
 	 */
 	public void open() {
 		ModelFlashCardAllDecks newDeck = new ModelFlashCardAllDecks();
@@ -817,6 +856,7 @@ public class ControllerMain {
 
 	/**
 	 * Save or Save As the current deck
+	 * <br>Complexity: O(N) sine save() is O(N)
 	 */
 	public void saveDeck() {
 		if (!_newFile) {
@@ -829,14 +869,15 @@ public class ControllerMain {
 
 	/**
 	 * Main core saving method, called when there is an active file to save to
+	 * <br>Complexity: O(N)
 	 */
 	public void save() {
-		if (_viewingWorkingDeck) {
+		if (_viewingMainDeck) {
 			if (_currentCard != null) {
-				_allDecks.getWorkingDeck().enqueue(_currentCard);
+				_allDecks.getMainDeck().enqueue(_currentCard);
 			}
 			_currentCard = null;
-			_allDecks.getWorkingDeck().enqueueBacktoPrevious();
+			_allDecks.getMainDeck().enqueueBacktoPrevious();
 		}
 		else {
 			if (_currentCard != null) {
@@ -879,6 +920,7 @@ public class ControllerMain {
 
 	/**
 	 * Ask the user for the location of where they want to save
+	 * <br>Complexity: O(N)
 	 */
 	public void saveAsDeck() {
 		_popUpMessages = true;
@@ -898,6 +940,7 @@ public class ControllerMain {
 
 	/**
 	 * Make sure the use wants to save before exiting the program
+	 * <br>Complexity: O(N) since saveDeck() is O(N)
 	 */
 	public void confirmExit() {
 		if (!_isChanged) {
@@ -926,7 +969,8 @@ public class ControllerMain {
 	}
 	
 	/**
-	 * Called when the user left or right clicks on the currently displaying Flash Card JPanel
+	 * Called when the user left or right clicks on the currently displaying Flash Card JPanel.
+	 * <br>Complexity: O(1)
 	 * @param e if 'e' is a right mouse click, then popUpEditJDialog() is called, else (left mouse click) flip() is called
 	 */
 	public void flashCardPanelClicked(MouseEvent e) {
@@ -942,10 +986,11 @@ public class ControllerMain {
 
 	/**
 	 * Used by outside classes to update the colors and text on the JDialog before making it visible
+	 * <br>Complexity: O(1)
 	 */
 	public void resetEditCardWindow() {
 		if (_currentCard != null) {
-			if (getIsViewingWorkingDeck()) {
+			if (getIsViewingMainDeck()) {
 				_mainScreenJPanel.getEditCardJDialog().getBtnNewCard().setVisible(true);
 				_mainScreenJPanel.getEditCardJDialog().getChckbxSameColorFor().setEnabled(true);
 			}
@@ -969,7 +1014,8 @@ public class ControllerMain {
 
 	/**
 	 * Used to write out the string on the text pane if there are data or no data on the FlashCard
-	 * currently being read
+	 * currently being read.
+	 * <br>Complexity: O(1)
 	 * @param text The string of what the TextPane of the edit JDialog will show
 	 */
 	private void setTextPane(String text) {
@@ -1000,7 +1046,8 @@ public class ControllerMain {
 	}
 
 	/**
-	 * FlashCard strings are stored with html code, this method converts it from html to regular text
+	 * FlashCard strings are stored with html code, this method converts it from html to regular text.
+	 * <br>Complexity: O(1)
 	 * @param text Converts the string stored in the Flash Card data as html code to regular text
 	 * @return returns the converted regular text as a String
 	 */
@@ -1010,14 +1057,16 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Sets the background color of the textpane
+	 * Sets the background color of the textpane.
+	 * <br>Complexity: O(1)
 	 */
 	private void setTextPaneBackground() {
 		_mainScreenJPanel.getEditCardJDialog().getTextPane().setBackground(_currentCard.getCardColor());
 	}
 
 	/**
-	 * Used by ViewEditCardColorButton to only change color but not JTextPane text
+	 * Used by ViewEditCardColorButton to only change color but not JTextPane text.
+	 * <br>Complexity: O(N) since enqueueBackToCurrent() is O(N)
 	 * @param color The current color that the user selected
 	 */
 	public void setColor(Color color) {
@@ -1039,7 +1088,8 @@ public class ControllerMain {
 
 	/**
 	 * Used by editing JDialog window when Cancel button is pushed.
-	 * Revert changes done during editing
+	 * Revert changes done during editing.
+	 * <br>Complexity: O(N) since cancelEditChanges() is O(N)
 	 */
 	public void cancelButton() {
 		cancelEditChanges();
@@ -1047,7 +1097,8 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Used by editing JDialog window to change the function of the "Next" button
+	 * Used by editing JDialog window to change the function of the "Next" button.
+	 * <br>Complexity: O(N) since enqueueBackToCurrent() is O(N)
 	 */
 	public void nextButtonEditJDialog() {
 		if (_editFront) {
@@ -1077,7 +1128,8 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Used by JDialog window to quickly make changes to a card and then add a new card
+	 * Used by JDialog window to quickly make changes to a card and then add a new card.
+	 * <br>Complexity: O(N)
 	 */
 	public void newCardEditCard() {
 		String text = _mainScreenJPanel.getEditCardJDialog().getTextPane().getText();
@@ -1094,7 +1146,8 @@ public class ControllerMain {
 	}
 
 	/**
-	 * If the state of the checkBox is checked, then makes all new card have the same color
+	 * If the state of the checkBox is checked, then makes all new card have the same color.
+	 * <br>Complexity: O(1)
 	 * @param select is select is true, check box is checked, sets colorLock true, saves the color
 	 * the user selected to the _chosenColor. Else, sets colorLock to false, restore to the color
 	 * that is next on the HelperCardColors
@@ -1114,7 +1167,8 @@ public class ControllerMain {
 
 	/**
 	 * Used by JDialog edit window. When the delete button is pushed,
-	 * confirms to the user if they want to delete the current card
+	 * confirms to the user if they want to delete the current card.
+	 * <br>Complexity: O(N) since deleting from complete deck is O(N)
 	 */
 	public void delete() {
 		int response = JOptionPane.showConfirmDialog(null, "Permanently delete this card?", "",
@@ -1136,7 +1190,8 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Allows other class to access the current deck
+	 * Getter method that allows other class to access the current deck.
+	 * <br>Complexity: O(1)
 	 * @return returns the current deck the user is working on
 	 */
 	public ModelFlashCardAllDecks getAllDecks() {
@@ -1144,7 +1199,8 @@ public class ControllerMain {
 	}
 
 	/**
-	 * Used by TrinhFlashCardQueue to load in the Main Screen into the JFrame
+	 * Getter method that is used by TrinhFlashCardQueue to load in the Main Screen into the JFrame
+	 * <br>Complexity: O(1)
 	 * @return
 	 */
 	public ViewMainScreenJPanel getMainScreen() {
@@ -1152,6 +1208,7 @@ public class ControllerMain {
 	}
 	/**
 	 * Getter method for currently loaded file
+	 * <br>Complexity: O(1)
 	 * @return Returns _file
 	 */
 	public File getFile() {

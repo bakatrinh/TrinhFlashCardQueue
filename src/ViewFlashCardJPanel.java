@@ -12,28 +12,29 @@ import javax.swing.BoxLayout;
 
 /**
  * @author Trinh Nguyen
- * @Discription Class that draws a graphical representation of the current flash card to the user.
+ * <br>Description: Class that draws a graphical representation of the current flash card to the user.
  */
 public class ViewFlashCardJPanel extends JPanel{
 	/**
-	 * The text that will be shown on the JPanel, could be text of the front or back data
+	 * The text that will be shown on the JPanel, could be text of the front or back data.
 	 */
 	private JLabel _cardText;
 	/**
-	 * Indicated whether the card is showing contents of the front of the card or the back
+	 * Indicated whether the card is showing contents of the front of the card or the back.
 	 */
 	private JLabel _lblCardSide;
 	/**
-	 * Indicates the ID of the card being displayed
+	 * Indicates the ID of the card being displayed.
 	 */
 	private JLabel _lblCardID;
 	/**
-	 * Lower JPanel used for storing _lblCardSide and _lblCardID
+	 * Lower JPanel used for storing _lblCardSide and _lblCardID.
 	 */
 	private JPanel _southPanel;
 	/**
 	 * Constructor to set up appearance and attributes for the card to be
-	 * displayed
+	 * displayed.
+	 * <br>Complexity: O(1)
 	 */
 	public ViewFlashCardJPanel() {
         setPreferredSize(new Dimension(430, 230));
@@ -70,7 +71,10 @@ public class ViewFlashCardJPanel extends JPanel{
 	}
 	
 	/**
-	 * Sets the text field of the current card with html code to add text wrapping
+	 * Sets the text field of the current card with html code.
+	 * Html coded strings adds text wrapping when displayed
+	 * on a JLabel.
+	 * <br>Complexity: O(1)
 	 * @param text The text to be displayed on the JPanel
 	 * @param isFront if true, _lblCardSide will be set to "front" else, "back"
 	 * @param ID Increments this ID by 1 and converts it to a string
@@ -88,7 +92,8 @@ public class ViewFlashCardJPanel extends JPanel{
 	}
 	
 	/**
-	 * Sets the color of the current card being displayed
+	 * Sets the color of the current card being displayed.
+	 * <br>Complexity: O(1)
 	 * @param currentColor The color the JLabel background will be set to
 	 */
 	public void setColor(Color currentColor) {
@@ -96,7 +101,8 @@ public class ViewFlashCardJPanel extends JPanel{
 	}
 	
 	/**
-	 * Called by other classes to draw a main screen on the program
+	 * Called by other classes to draw a main screen on the program.
+	 * <br>Complexity: O(1)
 	 */
 	public void drawTitle() {
 		setBackground(new Color(179, 216, 253));
@@ -111,7 +117,9 @@ public class ViewFlashCardJPanel extends JPanel{
 	}
 	
 	/**
-	 * Used to draw the appearance of the currently given card
+	 * Used to draw the appearance of the currently given card.
+	 * HTML codes added to the String text to create text wrapping.
+	 * <br>Complexity: O(1)
 	 * @param currentColor Color for the background to be changed to
 	 * @param text String of the text to be shown on the JPanel
 	 * @param ID The ID of the card to be displayed on the JPanel
@@ -129,7 +137,8 @@ public class ViewFlashCardJPanel extends JPanel{
 	}
 	
 	/**
-	 * Used to draw an empty box to show the user that there is no more cards
+	 * Used to draw an empty box to show the user that there is no more cards.
+	 * <br>Complexity: O(1)
 	 */
 	public void drawEmpty() {
 		setBackground(Color.WHITE);

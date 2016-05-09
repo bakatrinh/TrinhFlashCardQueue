@@ -12,54 +12,55 @@ import java.awt.geom.Path2D;
 
 /**
  * @author Trinh Nguyen
- * @Discription Paints a 100x100 JPanel that graphically shows the size of the deck.
+ * <br>Description: Paints a 100x100 JPanel that graphically shows the size of the deck.
  * It also shows small representation of each color in the order of the FlashCardDeck being accessed.
  */
 public class ViewDeckIconJPanel extends JPanel {
 	/**
-	 * Used in the algorithm to decide that color order of the flash cards to paint
+	 * Used in the algorithm to decide that color order of the flash cards to paint.
 	 */
 	private int _cardCount;
 	/**
-	 * Paints a "Selected" string in the corner if selected
+	 * Paints a "Selected" string in the corner if selected.
 	 */
 	private String _isSelectedString;
 	/**
-	 * Used to paint the card count string in the corner
+	 * Used to paint the card count string in the corner.
 	 */
 	private String _cardCountString;
 	/**
-	 * Used to check if the deck is selected
+	 * Used to check if the deck is selected.
 	 */
 	private boolean _isSelected;
 	/**
-	 * Checks if the panel is being hovered over with a mouse so that the background color can be changed
+	 * Checks if the panel is being hovered over with a mouse so that the background color can be changed.
 	 */
 	private boolean _isHover;
 	/**
-	 * Stores the current title of the deck to be drawn during repaint()
+	 * Stores the current title of the deck to be drawn during repaint().
 	 */
 	private String _deckTitle;
 	/**
-	 * Graphics2D object used to paint everything
+	 * Graphics2D object used to paint everything.
 	 */
 	private Graphics2D g2d;
 	/**
 	 * A copy of the current deck in reverse. Used by the painting algorithm to
-	 * draw the flash cards in reverse order
+	 * draw the flash cards in reverse order.
 	 */
 	private ModelFlashCardDeck _currentDeck;
 	/**
-	 * Saved font for drawing the title
+	 * Saved font for drawing the title.
 	 */
 	private static final Font _deckTitleFont = new Font("Lucida Grande", Font.PLAIN, 11);
 	/**
-	 * Saved font for drawing the card count
+	 * Saved font for drawing the card count.
 	 */
 	private static final Font _deckCardCountFont = new Font("Lucida Grande", Font.PLAIN, 14);
 	
 	/**
-	 * Constructor, initializes the JPanel and attributes
+	 * Constructor, initializes the JPanel and attributes.
+	 * <br>Complexity: O(1)
 	 */
 	public ViewDeckIconJPanel() {
 		_cardCount = 0;
@@ -73,7 +74,8 @@ public class ViewDeckIconJPanel extends JPanel {
 	}
 
 	/**
-	 * Sets deck title string in the top of this panel when painted
+	 * Sets deck title string in the top of this panel when painted.
+	 * <br>Complexity: O(1)
 	 * @param title The title the deck should be set to
 	 */
 	public void setDeckTitle(String title) {
@@ -81,7 +83,8 @@ public class ViewDeckIconJPanel extends JPanel {
 	}
 
 	/**
-	 * Called by other classes to tell this panel that it is selected
+	 * Called by other classes to tell this panel that it is selected.
+	 * <br>Complexity: O(1)
 	 * @param isSelected If true, "Selected" will be displayed during repaint(). Else no
 	 * text is displayed
 	 */
@@ -91,7 +94,8 @@ public class ViewDeckIconJPanel extends JPanel {
 	}
 	
 	/**
-	 * Called by other classes to let this panel know that a mouse is hovering over it
+	 * Called by other classes to let this panel know that a mouse is hovering over it.
+	 * <br>Complexity: O(1)
 	 * @param hover Sets _isHover to this value and repaints. The background
 	 * color is repainted in different color based on the boolean value
 	 */
@@ -103,6 +107,7 @@ public class ViewDeckIconJPanel extends JPanel {
 	/**
 	 * Called by other classes every time there is an update the the FlashCardDeck
 	 * data so that this panel can Repaint everything to visually represent the changes.
+	 * <br>Complexity: O(1)
 	 * @param cardCount The number to be displayed on the JPanel during repaint to indicate
 	 * how many cards are in the current deck
 	 */
@@ -115,7 +120,8 @@ public class ViewDeckIconJPanel extends JPanel {
 	/**
 	 * Repaints the different components of the JPanel with
 	 * corresponding booleans for displayed certain text, card counts,
-	 * and colors of each cards
+	 * and colors of each cards.
+	 * <br>Complexity: 
 	 */
 	public void paintComponent(Graphics g) {
 		g2d = (Graphics2D) g;
@@ -181,7 +187,8 @@ public class ViewDeckIconJPanel extends JPanel {
 	}
 	
 	/**
-	 * Instructions for how to draw a single card with the given color and location
+	 * Instructions for how to draw a single card with the given color and location.
+	 * <br>Complexity: O(1)
 	 * @param g2d Graphics2D object linked to super for repainting
 	 * @param cardColor Color of the card
 	 * @param startingWidth Width position of the card in the JPanel
@@ -201,7 +208,8 @@ public class ViewDeckIconJPanel extends JPanel {
 	}
 	
 	/**
-	 * Used when drawing strings on the panel to add an outline to the text for better visibility
+	 * Used when drawing strings on the panel to add an outline to the text for better visibility.
+	 * <br>Complexity: O(1)
 	 * @param g2d Graphics2D object linked to super for repainting
 	 * @param font The font of the String being drawn
 	 * @param text The text of the String being drawn
@@ -220,7 +228,8 @@ public class ViewDeckIconJPanel extends JPanel {
 	}
 	
 	/**
-	 * Instructions on how to draw when deck is empty
+	 * Instructions on how to draw when deck is empty.
+	 * <br>Complexity: O(1)
 	 * @param g2d The Graphics2D object linked to super for repainting
 	 */
 	private void drawEmptyDeck(Graphics2D g2d) {
@@ -230,7 +239,8 @@ public class ViewDeckIconJPanel extends JPanel {
 	}
 	
 	/**
-	 * Instructions on how to draw when deck has 1 card, can be used later on to adjust the locations
+	 * Instructions on how to draw when deck has 1 card, can be used later on to adjust the locations.
+	 * <br>Complexity: O(1)
 	 * @param g2d The Graphics2D object linked to super for repainting
 	 * @param copyDeck Copy of the deck that is being analyzed to determine the color and order
 	 * it would be displayed on the JPanel
@@ -239,7 +249,8 @@ public class ViewDeckIconJPanel extends JPanel {
 		drawCardPlacementGenerator(g2d, copyDeck, 20, 25);
 	}
 	/**
-	 * Instructions on how to draw when deck has 2 cards, can be used later on to adjust the locations
+	 * Instructions on how to draw when deck has 2 cards, can be used later on to adjust the locations.
+	 * <br>Complexity: O(1)
 	 * @param g2d The Graphics2D object linked to super for repainting
 	 * @param copyDeck Copy of the deck that is being analyzed to determine the color and order
 	 * it would be displayed on the JPanel
@@ -248,7 +259,8 @@ public class ViewDeckIconJPanel extends JPanel {
 		drawCardPlacementGenerator(g2d, copyDeck, 15, 28);
 	}
 	/**
-	 * Instructions on how to draw when deck has 3 cards, can be used later on to adjust the locations
+	 * Instructions on how to draw when deck has 3 cards, can be used later on to adjust the locations.
+	 * <br>Complexity: O(1)
 	 * @param g2d The Graphics2D object linked to super for repainting
 	 * @param copyDeck Copy of the deck that is being analyzed to determine the color and order
 	 * it would be displayed on the JPanel
@@ -257,7 +269,8 @@ public class ViewDeckIconJPanel extends JPanel {
 		drawCardPlacementGenerator(g2d, copyDeck, 13, 28);
 	}
 	/**
-	 * Instructions on how to draw when deck has 4 cards, can be used later on to adjust the locations
+	 * Instructions on how to draw when deck has 4 cards, can be used later on to adjust the locations.
+	 * <br>Complexity: O(1)
 	 * @param g2d The Graphics2D object linked to super for repainting
 	 * @param copyDeck Copy of the deck that is being analyzed to determine the color and order
 	 * it would be displayed on the JPanel
@@ -266,7 +279,8 @@ public class ViewDeckIconJPanel extends JPanel {
 		drawCardPlacementGenerator(g2d, copyDeck, 9, 29);
 	}
 	/**
-	 * Instructions on how to draw when deck has 5 cards, can be used later on to adjust the locations
+	 * Instructions on how to draw when deck has 5 cards, can be used later on to adjust the locations.
+	 * <br>Complexity: O(1)
 	 * @param g2d The Graphics2D object linked to super for repainting
 	 * @param copyDeck Copy of the deck that is being analyzed to determine the color and order
 	 * it would be displayed on the JPanel
@@ -275,7 +289,8 @@ public class ViewDeckIconJPanel extends JPanel {
 		drawCardPlacementGenerator(g2d, copyDeck, 7, 32);
 	}
 	/**
-	 * Instructions on how to draw when deck has 6 or more cards, can be used later on to adjust the locations
+	 * Instructions on how to draw when deck has 6 or more cards, can be used later on to adjust the locations.
+	 * <br>Complexity: O(N) where N is the number of flash cards stored in the queue array
 	 * @param g2d The Graphics2D object linked to super for repainting
 	 * @param copyDeck Copy of the deck that is being analyzed to determine the color and order
 	 * it would be displayed on the JPanel
@@ -285,7 +300,8 @@ public class ViewDeckIconJPanel extends JPanel {
 	}
 	
 	/**
-	 * Used by all the method to read in the given deck data and convert it to a graphical representation
+	 * Used by all the method to read in the given deck data and convert it to a graphical representation.
+	 * <br>Complexity: O(N) where N is the number of flash cards stored in the queue array
 	 * @param g2d The Graphics2D object linked to super for repainting
 	 * @param copyDeck Copy of the deck with all the cards to be analyzed for colors and order
 	 * @param width The width of where the repainted card will be drawn on the JPanel
@@ -307,7 +323,8 @@ public class ViewDeckIconJPanel extends JPanel {
 	}
 	
 	/**
-	 * Used by other classes to update the painting in this class to represent changes
+	 * Used by other classes to update the painting in this class to represent changes.
+	 * <br>Complexity: O(N) where N is the number of flash cards stored in the queue array
 	 * @param currentDeck The deck to copy from
 	 * @param currentCard If there is also a card currently being viewed, add a copy of
 	 * that card to the deck to be analyzed as well, otherwise this can be null
@@ -330,7 +347,8 @@ public class ViewDeckIconJPanel extends JPanel {
 	}
 	
 	/**
-	 * Recursive method to copy the deck in reverse. Called by updatedDeckStatusRepaint
+	 * Recursive method to copy the deck in reverse. Called by updatedDeckStatusRepaint.
+	 * <br>Complexity: O(N) where N is the number of flash cards stored in the queue array
 	 * @param currentDeck Should be a new empty deck which will have cards enqueued into this
 	 * @param copyDeck Copy of the deck that will have its cards dequeued and enqueued into currentDeck
 	 * but in reverse order

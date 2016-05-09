@@ -20,97 +20,98 @@ import java.awt.GridLayout;
 
 /**
  * @author Trinh Nguyen
- * @Discription Main Screen class. Displays representation of the current cards and decks. Allows the user
- * to edit, save, delete, and move cards around
+ * <br>Description: Main Screen class. Displays representation of the current cards and decks. Allows the user
+ * to edit, save, delete, and move cards around.
  */
 public class ViewMainScreenJPanel extends JPanel{
 	/**
-	 * Open saved deck Button
+	 * Open saved deck Button.
 	 */
 	private JButton _btnOpen;
 	/**
-	 * Save current deck button
+	 * Save current deck button.
 	 */
 	private JButton _btnSave;
 	/**
-	 * Save deck to specific location button
+	 * Save deck to specific location button.
 	 */
 	private JButton _btnSaveAs;
 	/**
-	 * Reset button
+	 * Reset button.
 	 */
 	private JButton _btnReset;
 	/**
-	 * Make new card button
+	 * Make new card button.
 	 */
 	private JButton _btnNewCard;
 	/**
-	 * Edit card button
+	 * Edit card button.
 	 */
 	private JButton _btnEditCard;
 	/**
-	 * Clear the memorized deck button
+	 * Clear the memorized deck button.
 	 */
 	private JButton _btnClearMemorized;
 	/**
-	 * Move card to the memorized deck button
+	 * Move card to the memorized deck button.
 	 */
 	private JButton _btnMoveToMemorized;
 	/**
-	 * Flip between the front and back of the card button
+	 * Previous card button.
 	 */
-	private JButton _btnFlip;
+	private JButton _btnPrevious;
 	/**
-	 * Go to next card button
+	 * Go to next card button.
 	 */
 	private JButton _btnNext;
 	/**
-	 * Make new deck button
+	 * Make new deck button.
 	 */
 	private JButton _btnNewDeck;
 	/**
-	 * Reload the deck to the file button
+	 * Reload the deck to the file button.
 	 */
 	private JButton _btnRevertToFile;
 	/**
-	 * Exit program button
+	 * Exit program button.
 	 */
 	private JButton _btnExit;
 	/**
-	 * The main JFrame this window is contained in
+	 * The main JFrame this window is contained in.
 	 */
 	private JFrame _mainJFrame;
 	/**
-	 * File browsing component
+	 * File browsing component.
 	 */
 	private JFileChooser _fileChooser;
 	/**
 	 * Reference to the main controller that manage the appearance of this
-	 * JPanel
+	 * JPanel.
 	 */
 	private ControllerMain _mainController;
 	/**
 	 * Reference to the center JPanel that displays contents of the current
-	 * viewing card
+	 * viewing card.
 	 */
 	private ViewFlashCardJPanel _centerJPanelFlashCard;
 	/**
-	 * Reference to the edit card JDialog window
+	 * Reference to the edit card JDialog window.
 	 */
 	private ViewEditCardJDialog _editCardJDialog;
 	/**
 	 * Reference to the JPanel that displayed graphical representation of the
-	 * working deck
+	 * main deck.
 	 */
-	private ViewDeckIconJPanel _workingDeckIconJPanel;
+	private ViewDeckIconJPanel _mainDeckIconJPanel;
 	/**
 	 * Reference to the JPanel that displayed graphical representation of the
-	 * memorized deck
+	 * memorized deck.
 	 */
 	private ViewDeckIconJPanel _memorizedDeckIconJPanel;
 	/**
 	 * Constructor, links itself to main controller and main JFrame, makes a
-	 * new JDialog card editing window as well and then initializes all components
+	 * new JDialog card editing window as well and then initializes all components.
+	 * <br>Complexity: O(1)
 	 * @param mainController Reference to the main controller
 	 * @param mainJFrame Reference to the main JFrame
 	 */
@@ -192,15 +193,15 @@ public class ViewMainScreenJPanel extends JPanel{
 		_middleJPanelSouthInner.add(_middleJPanelSouthInnerCenter);
 		_middleJPanelSouthInnerCenter.setLayout(new GridLayout(0, 3, 1, 1));
 		
-		_btnFlip = new JButton("Previous");
-		_btnFlip.addActionListener(new ActionListener() {
+		_btnPrevious = new JButton("Previous");
+		_btnPrevious.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				_mainController.previousCard();
 			}
 		});
-		_btnFlip.setEnabled(false);
-		_btnFlip.setFocusable(false);
-		_middleJPanelSouthInnerCenter.add(_btnFlip);
+		_btnPrevious.setEnabled(false);
+		_btnPrevious.setFocusable(false);
+		_middleJPanelSouthInnerCenter.add(_btnPrevious);
 		
 		_btnNext = new JButton("Next");
 		_btnNext.addActionListener(new ActionListener() {
@@ -331,28 +332,28 @@ public class ViewMainScreenJPanel extends JPanel{
 		_leftJPanelBottom.setLayout(new BorderLayout(0, 0));
 		
 		
-		_workingDeckIconJPanel = new ViewDeckIconJPanel();
-		_workingDeckIconJPanel.addMouseListener(new MouseAdapter() {
+		_mainDeckIconJPanel = new ViewDeckIconJPanel();
+		_mainDeckIconJPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				_mainController.switchToWorkingDeck();
+				_mainController.switchToMainDeck();
 			}
 		});
-		_workingDeckIconJPanel.addMouseListener(new MouseAdapter() {
+		_mainDeckIconJPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				_workingDeckIconJPanel.setMouseHover(true);
+				_mainDeckIconJPanel.setMouseHover(true);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				_workingDeckIconJPanel.setMouseHover(false);
+				_mainDeckIconJPanel.setMouseHover(false);
 			}
 		});
-		_workingDeckIconJPanel.updateDeckStatusRepaint(_mainController.getAllDecks().getWorkingDeck(), _mainController.getCard());
-		_workingDeckIconJPanel.setDeckTitle("Main Deck");
-		_workingDeckIconJPanel.setSelected(true);
+		_mainDeckIconJPanel.updateDeckStatusRepaint(_mainController.getAllDecks().getMainDeck(), _mainController.getCard());
+		_mainDeckIconJPanel.setDeckTitle("Main Deck");
+		_mainDeckIconJPanel.setSelected(true);
 
-		_leftJPanelBottom.add(_workingDeckIconJPanel, BorderLayout.CENTER);
+		_leftJPanelBottom.add(_mainDeckIconJPanel, BorderLayout.CENTER);
 		
 		Component verticalStrut = Box.createVerticalStrut(4);
 		_leftJPanelBottom.add(verticalStrut, BorderLayout.NORTH);
@@ -478,103 +479,117 @@ public class ViewMainScreenJPanel extends JPanel{
 		Component verticalStrut_3 = Box.createVerticalStrut(4);
 		_rightJPanelBottom.add(verticalStrut_3, BorderLayout.SOUTH);
 		
-		_workingDeckIconJPanel.updateDeckIcon(_mainController.getAllDecks().getWorkingDeck().getCardCounter());
+		_mainDeckIconJPanel.updateDeckIcon(_mainController.getAllDecks().getMainDeck().getCardCounter());
 		_memorizedDeckIconJPanel.updateDeckIcon(_mainController.getAllDecks().getMemorizedDeck().getCardCounter());
 	}
 	
 	/**
-	 * Getter for main JFrame
+	 * Getter for main JFrame.
+	 * <br>Complexity: O(1)
 	 * @return Returns _mainJFrame
 	 */
 	public JFrame getMainJFrame() {
 		return _mainJFrame;
 	}
 	/**
-	 * Getter for next card button
+	 * Getter for next card button.
+	 * <br>Complexity: O(1)
 	 * @return Returns _btnNext
 	 */
 	public JButton getBtnNext() {
 		return _btnNext;
 	}
 	/**
-	 * Getter for the Flip card button
+	 * Getter for the Flip card button.
+	 * <br>Complexity: O(1)
 	 * @return Returns _btnFlip
 	 */
 	public JButton getBtnFlip() {
-		return _btnFlip;
+		return _btnPrevious;
 	}
 	/**
-	 * Getter for move to memorized deck button
+	 * Getter for move to memorized deck button.
+	 * <br>Complexity: O(1)
 	 * @return Returns _btnMoveToMemorized
 	 */
 	public JButton getBtnMoveToMemorized() {
 		return _btnMoveToMemorized;
 	}
 	/**
-	 * Getter for making new card button
+	 * Getter for making new card button.
+	 * <br>Complexity: O(1)
 	 * @return Returns _btnNewCard
 	 */
 	public JButton getBtnNewCard() {
 		return _btnNewCard;
 	}
 	/**
-	 * Getter for edit card button
+	 * Getter for edit card button.
+	 * <br>Complexity: O(1)
 	 * @return _btnEditCard
 	 */
 	public JButton getBtnEditCard() {
 		return _btnEditCard;
 	}
 	/**
-	 * Getter for clear the memorized deck button
+	 * Getter for clear the memorized deck button.
+	 * <br>Complexity: O(1)
 	 * @return Returns _btnClearMemorized
 	 */
 	public JButton getBtnClearMemorized() {
 		return _btnClearMemorized;
 	}
 	/**
-	 * Getter for reset button
+	 * Getter for reset button.
+	 * <br>Complexity: O(1)
 	 * @return Returns _btnReset
 	 */
 	public JButton getBtnReset() {
 		return _btnReset;
 	}
 	/**
-	 * Getter for revert to the currently loaded file button
+	 * Getter for revert to the currently loaded file button.
+	 * <br>Complexity: O(1)
 	 * @return Returns _btnRevertToFile
 	 */
 	public JButton getBtnRevertToFile() {
 		return _btnRevertToFile;
 	}
 	/**
-	 * Getter for the file choosing window
+	 * Getter for the file choosing window.
+	 * <br>Complexity: O(1)
 	 * @return Returns _fileChooser
 	 */
 	public JFileChooser getFileChooser() {
 		return _fileChooser;
 	}
 	/**
-	 * Getter for the current flash card JPanel
+	 * Getter for the current flash card JPanel.
+	 * <br>Complexity: O(1)
 	 * @return Returns _flashCardPanel
 	 */
 	public ViewFlashCardJPanel getFlashCardPanel() {
 		return _centerJPanelFlashCard;
 	}
 	/**
-	 * Getter for Working Deck Icon JPanel
-	 * @return Returns _workingDeckIconJPanel
+	 * Getter for Main Deck Icon JPanel.
+	 * <br>Complexity: O(1)
+	 * @return Returns _mainDeckIconJPanel
 	 */
-	public ViewDeckIconJPanel getWorkingDeckIconJPanel() {
-		return _workingDeckIconJPanel;
+	public ViewDeckIconJPanel getMainDeckIconJPanel() {
+		return _mainDeckIconJPanel;
 	}
 	/**
-	 * Getter for Memorized Deck Icon JPanel
+	 * Getter for Memorized Deck Icon JPanel.
+	 * <br>Complexity: O(1)
 	 * @return Returns _memorizedDeckIconJPanel
 	 */
 	public ViewDeckIconJPanel getMemorizedDeckIconJPanel() {
 		return _memorizedDeckIconJPanel;
 	}
 	/**
-	 * Getter for edit card JDialog
+	 * Getter for edit card JDialog.
+	 * <br>Complexity: O(1)
 	 * @return Returns _editCardJDialog
 	 */
 	public ViewEditCardJDialog getEditCardJDialog() {

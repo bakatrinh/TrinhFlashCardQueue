@@ -19,31 +19,37 @@ import java.awt.Dialog;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 
+/**
+ * @author Trinh Nguyen
+ * <br>Description: JDialog window that pops up whenever the user chooses to
+ * edit the content of a flash card. Allows the user to change colors, text,
+ * or delete the card.
+ */
 public class ViewEditCardJDialog extends JDialog{
 	/**
-	 * Confirm button
+	 * Confirm button.
 	 */
 	private JButton _btnConfirm;
 	/**
-	 * Cancel button
+	 * Cancel button.
 	 */
 	private JButton _btnCancel;
 	/**
-	 * Delete card button
+	 * Delete card button.
 	 */
 	private JButton _btnDelete;
 	/**
-	 * Create new card quickly button
+	 * Create new card quickly button.
 	 */
 	private JButton _btnNewCard;
 	/**
 	 * Text pane for entering in String for front and
-	 * back data of the current card
+	 * back data of the current card.
 	 */
 	private JTextPane _textPane;
 	/**
 	 * Check box that when checked will keep all newly created cards the
-	 * same color
+	 * same color.
 	 */
 	private JCheckBox _chckbxSameColorFor;
 	/**
@@ -97,12 +103,13 @@ public class ViewEditCardJDialog extends JDialog{
 	
 	/**
 	 * A reference to the main controller needed to call certain
-	 * methods when a button is pushed
+	 * methods when a button is pushed.
 	 */
 	private ControllerMain _mainController;
 	
 	/**
-	 * Constructor to set up the components in the JDialog
+	 * Constructor to set up the components in the JDialog.
+	 * <br>Complexity: O(1)
 	 * @param mainController Reference to main controller
 	 * @param mainJFrame Reference to the main JFrame
 	 */
@@ -253,21 +260,24 @@ public class ViewEditCardJDialog extends JDialog{
 	}
 	
 	/**
-	 * Getter for Create New Card button
+	 * Getter for Create New Card button.
+	 * <br>Complexity: O(1)
 	 * @return returns _btnNewCard
 	 */
 	public JButton getBtnNewCard() {
 		return _btnNewCard;
 	}
 	/**
-	 * Getter for Check Box same color button
+	 * Getter for Check Box same color button.
+	 * <br>Complexity: O(1)
 	 * @return returns _chckbxSameColorFor
 	 */
 	public JCheckBox getChckbxSameColorFor() {
 		return _chckbxSameColorFor;
 	}
 	/**
-	 * Getter for Confirm button
+	 * Getter for Confirm button.
+	 * <br>Complexity: O(1)
 	 * @return Returns _btnConfirm
 	 */
 	public JButton getBtnConfirm() {
@@ -275,7 +285,8 @@ public class ViewEditCardJDialog extends JDialog{
 	}
 	/**
 	 * Getter for text pane used to enter the text you want to store
-	 * for the current card
+	 * for the current card.
+	 * <br>Complexity: O(1)
 	 * @return returns _textPane
 	 */
 	public JTextPane getTextPane() {

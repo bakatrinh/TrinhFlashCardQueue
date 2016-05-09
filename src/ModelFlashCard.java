@@ -4,20 +4,20 @@ import java.io.Serializable;
 
 /**
  * @author Trinh Nguyen
- * @Discription A single FlashCard, contains strings for front and back of card,
+ * <br>Description: A single FlashCard, contains strings for front and back of card,
  * color of the card, and ID of the card
  */
 public class ModelFlashCard  implements Serializable {
 	/**
-	 * The color of the card
+	 * The color of the card.
 	 */
 	private Color _cardColor;
 	/**
-	 * The String of the front of the card
+	 * The String of the front of the card.
 	 */
 	private String _frontData;
 	/**
-	 * The String of the back of the card
+	 * The String of the back of the card.
 	 */
 	private String _backData;
 	/**
@@ -29,7 +29,8 @@ public class ModelFlashCard  implements Serializable {
 	
 	/**
 	 * Constructor, creates a blank card with an assigned color
-	 * and ID
+	 * and ID.
+	 * <br>Complexity: O(1)
 	 * @param cardColor The color the card will be displayed as
 	 * @param ID The ID of the card at the time it is created
 	 */
@@ -41,7 +42,8 @@ public class ModelFlashCard  implements Serializable {
 	}
 	
 	/**
-	 * Getter for card ID
+	 * Getter for card ID.
+	 * <br>Complexity: O(1)
 	 * @return Returns current card ID
 	 */
 	public int getID() {
@@ -49,7 +51,8 @@ public class ModelFlashCard  implements Serializable {
 	}
 	
 	/**
-	 * Setter for the String data of the front of the card
+	 * Setter for the String data of the front of the card.
+	 * <br>Complexity: O(1)
 	 * @param frontData The string that the _frontData will
 	 * be changed to
 	 */
@@ -58,7 +61,8 @@ public class ModelFlashCard  implements Serializable {
 	}
 	
 	/**
-	 * Getter for the String of the data of the front of the card
+	 * Getter for the String of the data of the front of the card.
+	 * <br>Complexity: O(1)
 	 * @return Returns _frontData
 	 */
 	public String getFrontData() {
@@ -66,7 +70,8 @@ public class ModelFlashCard  implements Serializable {
 	}
 	
 	/**
-	 * Setter for the String data of the back of the card
+	 * Setter for the String data of the back of the card.
+	 * <br>Complexity: O(1)
 	 * @param backData The string that the _backData will
 	 * be changed to
 	 */
@@ -75,7 +80,8 @@ public class ModelFlashCard  implements Serializable {
 	}
 	
 	/**
-	 * Getter for the String of the data of the front of the card
+	 * Getter for the String of the data of the front of the card.
+	 * <br>Complexity: O(1)
 	 * @return Returns _backData
 	 */
 	public String getBackData() {
@@ -83,7 +89,8 @@ public class ModelFlashCard  implements Serializable {
 	}
 	
 	/**
-	 * Setter for the color of the card
+	 * Setter for the color of the card.
+	 * <br>Complexity: O(1)
 	 * @param cardColor The color that _cardColor will be
 	 * changed to
 	 */
@@ -92,7 +99,8 @@ public class ModelFlashCard  implements Serializable {
 	}
 	
 	/**
-	 * Getter for the color of the card
+	 * Getter for the color of the card.
+	 * <br>Complexity: O(1)
 	 * @return Returns _cardColor
 	 */
 	public Color getCardColor() {
