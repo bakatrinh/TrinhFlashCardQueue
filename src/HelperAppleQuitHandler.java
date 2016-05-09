@@ -7,9 +7,13 @@ import com.apple.eawt.QuitResponse;
 /**
  * <br>Description: This class is needed to make OSX command+q shortcut ask for
  * confirmation before closing the program.
- * <br>Complexity: O(1)
+ * <br>Complexity: O(1).
  */
 public class HelperAppleQuitHandler {
+	/**
+	 * This method is ran whenever the user closes the program under OSX.
+	 * @param mainController Reference to the main controller.
+	 */
 	public static void DoAppleQuit(ControllerMain mainController) {
 		Application a = Application.getApplication();
 		a.setQuitHandler(new QuitHandler() {

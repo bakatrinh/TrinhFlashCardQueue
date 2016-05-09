@@ -3,13 +3,17 @@ import java.io.Serializable;
 
 /**
  * @author Trinh Nguyen
- * <br>Description: Stores three FlashCardDecks that is used to
+ * <br>Description: Stores three {@link ModelFlashCardDeck} that is used to
  * represent the data stored to the user.
  * This class will be what is stored as a file to
  * be loaded back later.
  */
 public class ModelFlashCardAllDecks implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * The complete deck, stores all created card in order. _completeDeck copies
 	 * all the cards stored here to the main deck when a user clicks the reset button.
@@ -30,7 +34,7 @@ public class ModelFlashCardAllDecks implements Serializable {
 
 	/**
 	 * Constructor, makes a new instance for all three decks.
-	 * <br>Complexity: O(1)
+	 * <br>Complexity: O(1),
 	 */
 	public ModelFlashCardAllDecks() {
 		_completeDeck = new ModelFlashCardDeck();
@@ -40,26 +44,26 @@ public class ModelFlashCardAllDecks implements Serializable {
 	
 	/**
 	 * Getter for _mainDeck.
-	 * <br>Complexity: O(1)
-	 * @return Returns _mainDeck
+	 * <br>Complexity: O(1).
+	 * @return {@link #_completeDeck}
 	 */
 	public ModelFlashCardDeck getCompleteDeck() {
 		return _completeDeck;
 	}
 	
 	/**
-	 * Getter for _mainDeck
-	 * <br>Complexity: O(1)
-	 * @return Returns _mainDeck
+	 * Getter for _mainDeck.
+	 * <br>Complexity: O(1).
+	 * @return {@link #_mainDeck}
 	 */
 	public ModelFlashCardDeck getMainDeck() {
 		return _mainDeck;
 	}
 	
 	/**
-	 * Getter for _memorizedDeck
-	 * <br>Complexity: O(1)
-	 * @return Returns _memorizedDeck
+	 * Getter for _memorizedDeck.
+	 * <br>Complexity: O(1).
+	 * @return {@link #_memorizedDeck}
 	 */
 	public ModelFlashCardDeck getMemorizedDeck() {
 		return _memorizedDeck;

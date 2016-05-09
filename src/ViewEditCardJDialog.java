@@ -27,6 +27,10 @@ import javax.swing.Box;
  */
 public class ViewEditCardJDialog extends JDialog{
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Confirm button.
 	 */
 	private JButton _btnConfirm;
@@ -109,8 +113,8 @@ public class ViewEditCardJDialog extends JDialog{
 	
 	/**
 	 * Constructor to set up the components in the JDialog.
-	 * <br>Complexity: O(1)
-	 * @param mainController Reference to main controller
+	 * <br>Complexity: O(1).
+	 * @param mainController Reference to {@link ControllerMain}
 	 * @param mainJFrame Reference to the main JFrame
 	 */
 	public ViewEditCardJDialog(ControllerMain mainController, JFrame mainJFrame) {
@@ -261,24 +265,24 @@ public class ViewEditCardJDialog extends JDialog{
 	
 	/**
 	 * Getter for Create New Card button.
-	 * <br>Complexity: O(1)
-	 * @return returns _btnNewCard
+	 * <br>Complexity: O(1).
+	 * @return {@link #_btnNewCard}
 	 */
 	public JButton getBtnNewCard() {
 		return _btnNewCard;
 	}
 	/**
 	 * Getter for Check Box same color button.
-	 * <br>Complexity: O(1)
-	 * @return returns _chckbxSameColorFor
+	 * <br>Complexity: O(1).
+	 * @return {@link #_chckbxSameColorFor}
 	 */
 	public JCheckBox getChckbxSameColorFor() {
 		return _chckbxSameColorFor;
 	}
 	/**
 	 * Getter for Confirm button.
-	 * <br>Complexity: O(1)
-	 * @return Returns _btnConfirm
+	 * <br>Complexity: O(1).
+	 * @return {@link #_btnConfirm}
 	 */
 	public JButton getBtnConfirm() {
 		return _btnConfirm;
@@ -286,8 +290,8 @@ public class ViewEditCardJDialog extends JDialog{
 	/**
 	 * Getter for text pane used to enter the text you want to store
 	 * for the current card.
-	 * <br>Complexity: O(1)
-	 * @return returns _textPane
+	 * <br>Complexity: O(1).
+	 * @return {@link #_textPane}
 	 */
 	public JTextPane getTextPane() {
 		return _textPane;

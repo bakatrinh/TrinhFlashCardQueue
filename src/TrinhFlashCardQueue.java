@@ -4,14 +4,15 @@ import javax.swing.JFrame;
 
 /**
  * @author Trinh Nguyen
- * <br>Desription: TrinhFlashCardQueue, uses the queue model as the framework
- * for this Flash Card viewing program
+ * <br>Desription: TrinhFlashCardQueue, uses the queue model data structure
+ * for this Flash Card viewing program.
  */
 public class TrinhFlashCardQueue {
 	
 	/**
-	 * Launches the application.
-	 * <br>Complexity: O(1)
+	 * Launches the program.
+	 * <br>Complexity: O(1).
+	 * @param args No parameters is used to run this program.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {

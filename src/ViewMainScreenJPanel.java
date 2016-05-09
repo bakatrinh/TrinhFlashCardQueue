@@ -25,6 +25,10 @@ import java.awt.GridLayout;
  */
 public class ViewMainScreenJPanel extends JPanel{
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Open saved deck Button.
 	 */
 	private JButton _btnOpen;
@@ -109,11 +113,11 @@ public class ViewMainScreenJPanel extends JPanel{
 	 */
 	private ViewDeckIconJPanel _memorizedDeckIconJPanel;
 	/**
-	 * Constructor, links itself to main controller and main JFrame, makes a
+	 * Constructor, links itself to {@link ControllerMain} and main JFrame, makes a
 	 * new JDialog card editing window as well and then initializes all components.
-	 * <br>Complexity: O(1)
-	 * @param mainController Reference to the main controller
-	 * @param mainJFrame Reference to the main JFrame
+	 * <br>Complexity: O(1).
+	 * @param mainController Reference to the {@link ControllerMain}
+	 * @param mainJFrame Reference to the main JFrame.
 	 */
 	public ViewMainScreenJPanel(ControllerMain mainController, JFrame mainJFrame) {
 		_mainController = mainController;
@@ -149,6 +153,11 @@ public class ViewMainScreenJPanel extends JPanel{
 
 		// Displays a file explorer window to allow the user to open or save files
 		_fileChooser = new JFileChooser(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void approveSelection(){
 				File f = getSelectedFile();
@@ -485,112 +494,112 @@ public class ViewMainScreenJPanel extends JPanel{
 	
 	/**
 	 * Getter for main JFrame.
-	 * <br>Complexity: O(1)
-	 * @return Returns _mainJFrame
+	 * <br>Complexity: O(1).
+	 * @return {@link #_mainJFrame}
 	 */
 	public JFrame getMainJFrame() {
 		return _mainJFrame;
 	}
 	/**
 	 * Getter for next card button.
-	 * <br>Complexity: O(1)
-	 * @return Returns _btnNext
+	 * <br>Complexity: O(1).
+	 * @return {@link #_btnNext}
 	 */
 	public JButton getBtnNext() {
 		return _btnNext;
 	}
 	/**
-	 * Getter for the Flip card button.
-	 * <br>Complexity: O(1)
-	 * @return Returns _btnFlip
+	 * Getter for the previous card button.
+	 * <br>Complexity: O(1).
+	 * @return {@link #_btnPrevious}
 	 */
-	public JButton getBtnFlip() {
+	public JButton getBtnPrevious() {
 		return _btnPrevious;
 	}
 	/**
 	 * Getter for move to memorized deck button.
-	 * <br>Complexity: O(1)
-	 * @return Returns _btnMoveToMemorized
+	 * <br>Complexity: O(1).
+	 * @return {@link #_btnMoveToMemorized}
 	 */
 	public JButton getBtnMoveToMemorized() {
 		return _btnMoveToMemorized;
 	}
 	/**
 	 * Getter for making new card button.
-	 * <br>Complexity: O(1)
-	 * @return Returns _btnNewCard
+	 * <br>Complexity: O(1).
+	 * @return {@link #_btnNewCard}
 	 */
 	public JButton getBtnNewCard() {
 		return _btnNewCard;
 	}
 	/**
 	 * Getter for edit card button.
-	 * <br>Complexity: O(1)
-	 * @return _btnEditCard
+	 * <br>Complexity: O(1).
+	 * @return {@link #_btnEditCard}
 	 */
 	public JButton getBtnEditCard() {
 		return _btnEditCard;
 	}
 	/**
 	 * Getter for clear the memorized deck button.
-	 * <br>Complexity: O(1)
-	 * @return Returns _btnClearMemorized
+	 * <br>Complexity: O(1).
+	 * @return {@link #_btnClearMemorized}
 	 */
 	public JButton getBtnClearMemorized() {
 		return _btnClearMemorized;
 	}
 	/**
 	 * Getter for reset button.
-	 * <br>Complexity: O(1)
-	 * @return Returns _btnReset
+	 * <br>Complexity: O(1).
+	 * @return {@link #_btnReset}
 	 */
 	public JButton getBtnReset() {
 		return _btnReset;
 	}
 	/**
 	 * Getter for revert to the currently loaded file button.
-	 * <br>Complexity: O(1)
-	 * @return Returns _btnRevertToFile
+	 * <br>Complexity: O(1).
+	 * @return {@link #_btnRevertToFile}
 	 */
 	public JButton getBtnRevertToFile() {
 		return _btnRevertToFile;
 	}
 	/**
 	 * Getter for the file choosing window.
-	 * <br>Complexity: O(1)
-	 * @return Returns _fileChooser
+	 * <br>Complexity: O(1).
+	 * @return {@link #_fileChooser}
 	 */
 	public JFileChooser getFileChooser() {
 		return _fileChooser;
 	}
 	/**
 	 * Getter for the current flash card JPanel.
-	 * <br>Complexity: O(1)
-	 * @return Returns _flashCardPanel
+	 * <br>Complexity: O(1).
+	 * @return {@link #_centerJPanelFlashCard}
 	 */
 	public ViewFlashCardJPanel getFlashCardPanel() {
 		return _centerJPanelFlashCard;
 	}
 	/**
 	 * Getter for Main Deck Icon JPanel.
-	 * <br>Complexity: O(1)
-	 * @return Returns _mainDeckIconJPanel
+	 * <br>Complexity: O(1).
+	 * @return {@link #_mainDeckIconJPanel}
 	 */
 	public ViewDeckIconJPanel getMainDeckIconJPanel() {
 		return _mainDeckIconJPanel;
 	}
 	/**
 	 * Getter for Memorized Deck Icon JPanel.
-	 * <br>Complexity: O(1)
-	 * @return Returns _memorizedDeckIconJPanel
+	 * <br>Complexity: O(1).
+	 * @return {@link #_memorizedDeckIconJPanel}
 	 */
 	public ViewDeckIconJPanel getMemorizedDeckIconJPanel() {
 		return _memorizedDeckIconJPanel;
 	}
 	/**
 	 * Getter for edit card JDialog.
-	 * <br>Complexity: O(1)
-	 * @return Returns _editCardJDialog
+	 * <br>Complexity: O(1).
+	 * @return {@link #_editCardJDialog}
 	 */
 	public ViewEditCardJDialog getEditCardJDialog() {
 		return _editCardJDialog;

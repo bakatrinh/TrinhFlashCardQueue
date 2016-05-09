@@ -3,10 +3,14 @@ import java.io.Serializable;
 
 /**
  * @author Trinh Nguyen
- * <br>Description: Class that stores multiple FlashCard objects, the cards are managed using the Queue model Cards
- * are added, removed, and manipulated using queue and dequeue methods.
+ * <br>Description: Class that stores multiple {@link ModelFlashCard} objects, the cards are managed using the Queue model.
+ * Cards are added, removed, and manipulated using queue and dequeue methods.
  */
 public class ModelFlashCardDeck implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Initial memory size of new array deck.
 	 */
@@ -16,7 +20,7 @@ public class ModelFlashCardDeck implements Serializable {
 	 */
 	private ModelFlashCard[] _deck;
 	/**
-	 * The total counts currently stored in _deck.
+	 * The total counts currently stored in {@link #_deck}.
 	 */
 	private int _cardCounter;
 	/**
@@ -28,9 +32,9 @@ public class ModelFlashCardDeck implements Serializable {
 	private int _cardID;
 	
 	/**
-	 * The constructor. Creates a new _deck array with default
-	 * memory capacity and sets _cardCounter and _cardID to 0.
-	 * <br>Complexity: O(1)
+	 * The constructor. Creates a new {@link #_deck} array with default
+	 * memory capacity and sets {@link #_cardCounter} and {@link #_cardID} to 0.
+	 * <br>Complexity: O(1).
 	 */
 	public ModelFlashCardDeck() {
 		_deck = new ModelFlashCard[DEFAULT_CAPACITY];
@@ -40,8 +44,8 @@ public class ModelFlashCardDeck implements Serializable {
 	
 	/**
 	 * Used by other classes to check if the current deck is empty.
-	 * <br>Complexity: O(1)
-	 * @return returns true if _cardCounter is 0, else returns false
+	 * <br>Complexity: O(1).
+	 * @return True if _{@link #_cardCounter} is 0, else returns false
 	 */
 	public boolean isEmpty() {
 		if (_cardCounter == 0) {
@@ -55,8 +59,8 @@ public class ModelFlashCardDeck implements Serializable {
 	/**
 	 * Used to add new cards to the deck or to put back in old cards,
 	 * also increases memory when needed.
-	 * <br>Complexity: Amortized analysis of O(1). O(N) if resizing occurs
-	 * @param card The card to be enqueued
+	 * <br>Complexity: Amortized analysis of O(1). O(N) if resizing occurs.
+	 * @param card The card to be enqueued,
 	 */
 	public void enqueue(ModelFlashCard card) {
 		if (_cardCounter == _deck.length) {
@@ -70,16 +74,16 @@ public class ModelFlashCardDeck implements Serializable {
 	 * Used by other classes to check the contents of the card first in line
 	 * without dequeuing.
 	 * <br>Complexity: O(1).
-	 * @return Returns _deck[0]
+	 * @return The first object in the array of {@link #_deck}
 	 */
 	public ModelFlashCard peek() {
 		return _deck[0];
 	}
 
 	/**
-	 * Used to create actual new cards by incrementing _cardID.
-	 * <br>Complexity: Amortized analysis of O(1). O(N) if resizing occurs
-	 * @param The card to be added to the deck
+	 * Used to create actual new cards by incrementing {@link #_cardID}.
+	 * <br>Complexity: Amortized analysis of O(1). O(N) if resizing occurs.
+	 * @param card The card to be enqueued into the model.
 	 */
 	public void enqueueWithID(ModelFlashCard card) {
 		if (_cardCounter == _deck.length) {
@@ -92,9 +96,9 @@ public class ModelFlashCardDeck implements Serializable {
 	
 	/**
 	 * Used to remove the card in the front of the line.
-	 * <br>Complexity: O(N)
-	 * @return Returns the card that was removed in case
-	 * it is currently being used to display on the GUI
+	 * <br>Complexity: O(N).
+	 * @return The card that was removed in case
+	 * it is to be used by other methods.
 	 */
 	public ModelFlashCard dequeue() {
 		ModelFlashCard temp = _deck[0];
@@ -103,8 +107,8 @@ public class ModelFlashCardDeck implements Serializable {
 	}
 	
 	/**
-	 * Called to shift all the FlashCards up whenever a card is dequeued.
-	 * <br>Complexity: O(N)
+	 * Called to shift all the FlashCards up whenever a card is {@link #dequeue()}.
+	 * <br>Complexity: O(N).
 	 */
 	private void shiftDown() {
 		for (int i = 0; i < _cardCounter-1; i++) {
@@ -115,8 +119,8 @@ public class ModelFlashCardDeck implements Serializable {
 	
 	/**
 	 * Increases the memory of the deck to allow the user to store additional cards.
-	 * <br>Complexity: O(N)
-	 * @param size
+	 * <br>Complexity: O(N).
+	 * @param size The new size of the array.
 	 */
 	private void increaseCapacity(int size) {
 		ModelFlashCard[] old = _deck;
@@ -127,26 +131,26 @@ public class ModelFlashCardDeck implements Serializable {
 	
 	/**
 	 * Returns the number of cards in the current deck.
-	 * <br>Complexity: O(1)
-	 * @return Returns _cardCounter
+	 * <br>Complexity: O(1).
+	 * @return {@link #_cardCounter}
 	 */
 	public int getCardCounter() {
 		return _cardCounter;
 	}
 	
 	/**
-	 * Returns the ID of the card
-	 * <br>Complexity: O(1)
-	 * @return Returns _cardID
+	 * Returns the ID of the card.
+	 * <br>Complexity: O(1).
+	 * @return {@link #_cardID}
 	 */
 	public int getCardID() {
 		return _cardID;
 	}
 	
 	/**
-	 * Empties the deck by dequeuing every FlashCard. The deck still exist
-	 * in memory in case more cards are being added.
-	 * <br>Complexity: O(N)
+	 * Empties the deck by running {@link #dequeue()} until there is no more cards left.
+	 * The deck still exist in memory in case more cards are being added.
+	 * <br>Complexity: O(N).
 	 */
 	public void removeAll() {
 		while (_cardCounter > 0) {
@@ -155,10 +159,10 @@ public class ModelFlashCardDeck implements Serializable {
 	}
 	
 	/**
-	 * Used by other classes to make enqueue the current card and
-	 * dequeue until it is the card after next in line. Often used
+	 * Used by other classes to make {@link #enqueue(ModelFlashCard)} the current card and
+	 * {@link #dequeue()} until it is the card after next in line. Often used
 	 * when switching between main deck and memorized deck.
-	 * <br>Complexity: O(N)
+	 * <br>Complexity: O(N).
 	 */
 	public void enqueueBacktoNext() {
 		int cardCounter = _cardCounter - 1;
@@ -169,10 +173,10 @@ public class ModelFlashCardDeck implements Serializable {
 	}
 	
 	/**
-	 * Used by other classes to enqueue until 
-	 * the next card is the previous card of the current card
+	 * Used by other classes to {@link #enqueue(ModelFlashCard)} until 
+	 * the next card is the previous card of the current card.
 	 * Used by the previous card JButton.
-	 * <br>Complexity: O(N)
+	 * <br>Complexity: O(N).
 	 */
 	public void enqueueBacktoPrevious() {
 		int cardCounter = _cardCounter - 2;
@@ -184,8 +188,8 @@ public class ModelFlashCardDeck implements Serializable {
 	
 	/**
 	 * Used to move the card from one deck to another.
-	 * <br>Complexity: O(N)
-	 * @param other The deck the current card will be transferred to
+	 * <br>Complexity: O(N).
+	 * @param other The deck the current card will be transferred to.
 	 */
 	public void transferCards(ModelFlashCardDeck other) {
 		while (!isEmpty()) {
@@ -197,8 +201,8 @@ public class ModelFlashCardDeck implements Serializable {
 	/**
 	 * When a card data is updated, this method cycles through the entire deck and
 	 * update the deck on the corresponding card ID.
-	 * <br>Complexity: O(N)
-	 * @param card The card that was updated and to be saved onto the deck
+	 * <br>Complexity: O(N).
+	 * @param card The card that was updated and to be saved onto the deck.
 	 */
 	public void replaceCard(ModelFlashCard card) {
 		int cardCounter = _cardCounter;
@@ -215,8 +219,8 @@ public class ModelFlashCardDeck implements Serializable {
 	/**
 	 * Deletes the card with the matching ID and then returns to the card the user was previously on.
 	 * Used on the complete deck to delete a specific card.
-	 * <br>Complexity: O(N)
-	 * @param ID The ID of the card to be deleted
+	 * <br>Complexity: O(N).
+	 * @param ID The ID of the card to be deleted.
 	 */
 	public void deleteCard(int ID) {
 		int cardCounter = _cardCounter;
@@ -230,10 +234,10 @@ public class ModelFlashCardDeck implements Serializable {
 	}
 	
 	/**
-	 * Used to copy the content of one FlashCardDeck to another.
-	 * <br>Complexity: O(N)
+	 * Used to copy the content of one {@link #ModelFlashCardDeck()} to another.
+	 * <br>Complexity: O(N).
 	 * @param otherDeck The deck that is being changed by having contents
-	 * copied onto it
+	 * copied onto it.
 	 */
 	public void copyDeck(ModelFlashCardDeck otherDeck) {
 		removeAll();
