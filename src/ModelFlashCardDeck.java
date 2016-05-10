@@ -159,9 +159,9 @@ public class ModelFlashCardDeck implements Serializable {
 	}
 	
 	/**
-	 * Used by other classes to make {@link #enqueue(ModelFlashCard)} the current card and
-	 * {@link #dequeue()} until it is the card after next in line. Often used
-	 * when switching between main deck and memorized deck.
+	 * Used by other classes to make the last card become the second card of the array.
+	 * This is done by calling the {@link #enqueue(ModelFlashCard)} and the {@link #dequeue()}
+	 * method over and over. Often used when switching between main deck and memorized deck.
 	 * <br>Complexity: O(N).
 	 */
 	public void enqueueBacktoNext() {
@@ -173,9 +173,8 @@ public class ModelFlashCardDeck implements Serializable {
 	}
 	
 	/**
-	 * Used by other classes to {@link #enqueue(ModelFlashCard)} until 
-	 * the next card is the previous card of the current card.
-	 * Used by the previous card JButton.
+	 * Used by other classes to run make the last card the first card of the array.
+	 * Used by the previous card JButton to go "back" to the previous card.
 	 * <br>Complexity: O(N).
 	 */
 	public void enqueueBacktoPrevious() {

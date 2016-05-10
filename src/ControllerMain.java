@@ -11,11 +11,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import org.apache.commons.io.FilenameUtils;
+
+import com.apple.eawt.AppEvent;
+import com.apple.eawt.Application;
+import com.apple.eawt.QuitHandler;
+import com.apple.eawt.QuitResponse;
 
 /**
  * @author Trinh Nguyen
@@ -59,6 +66,10 @@ public class ControllerMain {
 	 */
 	private File _file;
 	/**
+	 * Stored colors that enables new cards to obtain a color from.
+	 */
+	private ArrayList<Color> _colorsTable;
+	/**
 	 * Returns true if the card is currently showing data of the front of the card.
 	 */
 	private boolean _front;
@@ -96,10 +107,12 @@ public class ControllerMain {
 	 */
 	public ControllerMain(JFrame mainJFrame) {
 		_allDecks = new ModelFlashCardAllDecks();
+		_colorsTable = new ArrayList<Color>();
+		addColorsToColorTable();
 		_mainScreenJPanel = new ViewMainScreenJPanel(this, mainJFrame);
 		String OS = System.getProperty("os.name").toLowerCase();
 		if (OS.contains("mac")) {
-			HelperAppleQuitHandler.DoAppleQuit(this);
+			DoAppleQuit(this);
 		}
 		_currentCard = null;
 		_front = true;
@@ -480,10 +493,10 @@ public class ControllerMain {
 	/**
 	 * Used to restore color to what the card color would be if it was not locked.
 	 * <br>Complexity: O(1).
-	 * @return {@link HelperCardColors#getColor(int)}. A color from HelperCardColors based on the index of the main deck.
+	 * @return {@link #getColor(int)}. A color from HelperCardColors based on the index of the main deck.
 	 */
 	public Color unlockColor() {
-		return new HelperCardColors().getColor(_allDecks.getCompleteDeck().getCardCounter()-1);
+		return getColor(_allDecks.getCompleteDeck().getCardCounter()-1);
 	}
 
 	/**
@@ -528,7 +541,7 @@ public class ControllerMain {
 		_currentCard = null;
 
 		if (!_colorLock) {
-			_currentCard = new ModelFlashCard(new HelperCardColors().getColor(_allDecks.getCompleteDeck().getCardCounter()), _allDecks.getCompleteDeck().getCardID());
+			_currentCard = new ModelFlashCard(getColor(_allDecks.getCompleteDeck().getCardCounter()), _allDecks.getCompleteDeck().getCardID());
 		}
 		else {
 			_currentCard = new ModelFlashCard(_chosenColor, _allDecks.getCompleteDeck().getCardID());
@@ -1213,5 +1226,88 @@ public class ControllerMain {
 	 */
 	public File getFile() {
 		return _file;
+	}
+	
+	/**
+	 * This method is ran whenever the user closes the program under OSX.
+	 * @param mainController Reference to the main controller.
+	 */
+	public static void DoAppleQuit(ControllerMain mainController) {
+		Application a = Application.getApplication();
+		a.setQuitHandler(new QuitHandler() {
+			@Override
+			public void handleQuitRequestWith(AppEvent.QuitEvent quitEvent, QuitResponse quitResponse) {
+				if (!mainController.getIsChanged()) {
+					quitResponse.performQuit();
+				}
+				else {
+					Object[] options = {"Save", "Don't Save", "Cancel"};
+					int response = JOptionPane.showOptionDialog(null,
+							"Save changes?","", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+					if (response == JOptionPane.NO_OPTION) {
+						quitResponse.performQuit();
+					} else if (response == JOptionPane.YES_OPTION) {
+						mainController.saveDeck();
+						mainController.confirmExit();
+					}
+					else {
+						quitResponse.cancelQuit();
+					}
+				}
+				quitResponse.cancelQuit();
+			}
+		});
+	}
+	
+	/**
+	 * Adds various colors to the {@link #_colorsTable}
+	 */
+	public void addColorsToColorTable() {
+		//Red
+		_colorsTable.add(new Color(254, 187, 185));
+		
+		//Orange
+		_colorsTable.add(new Color(254, 222, 182));
+		
+		//Yellow
+		_colorsTable.add(new Color(254, 238, 179));
+		
+		//Green
+		_colorsTable.add(new Color(193, 245, 176));
+		
+		//Blue
+		_colorsTable.add(new Color(179, 216, 253));
+		
+		//Purple
+		_colorsTable.add(new Color(246, 213, 254));
+		
+		//Pink
+		_colorsTable.add(new Color(254, 192, 210));
+		
+		//Brown
+		_colorsTable.add(new Color(237, 222, 203));
+		
+		//Graphite
+		_colorsTable.add(new Color(216, 216, 220));
+		
+		//Light Purple
+		_colorsTable.add(new Color(204, 204, 255));
+		
+		//Teal
+		_colorsTable.add(new Color(153, 255, 204));
+		
+		//White
+		_colorsTable.add(Color.WHITE);
+	}
+	
+	/**
+	 * Obtains a color from one of the colors stored in {@link #_colorsTable}, uses modulus operator
+	 * to obtain the color in order.
+	 * <br>Complexity: O(1).
+	 * @param cardCounter the current card count of whichever deck is being worked on.
+	 * @return A color in order based on the int given.
+	 */
+	public Color getColor(int cardCounter) {
+		return _colorsTable.get((cardCounter % (_colorsTable.size())));
 	}
 }
