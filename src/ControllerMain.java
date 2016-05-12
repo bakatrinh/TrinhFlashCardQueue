@@ -171,7 +171,7 @@ public class ControllerMain {
 							cancelButton();
 							return false;
 						}
-						
+
 					}
 				}
 				return false;
@@ -182,7 +182,7 @@ public class ControllerMain {
 	/**
 	 * Used by controller to dequeue the deck and display that card.
 	 * <br>Complexity: O(N). The enqueue and dequeue itself is O(1) but repainting
-	 * the deck icon to visually represent the changes is O(1).
+	 * the deck icon to visually represent the changes is O(N).
 	 */
 	public void nextCard() {
 		if (_viewingMainDeck) {
@@ -237,7 +237,7 @@ public class ControllerMain {
 		setFrameTitleUnsaved();
 		_isChanged = true;
 	}
-	
+
 	/**
 	 * Used by controller to dequeue the deck and display that card.
 	 * <br>Complexity: O(N).
@@ -304,6 +304,7 @@ public class ControllerMain {
 	 */
 	public void updateCard() {
 		_allDecks.getCompleteDeck().replaceCard(_currentCard);
+		enqueueBackToCurrent();
 	}
 
 	/**
@@ -334,7 +335,7 @@ public class ControllerMain {
 			}
 		}
 		else if (response == JOptionPane.CLOSED_OPTION) {
-			
+
 		}
 		_popUpMessages = true;
 	}
@@ -592,7 +593,7 @@ public class ControllerMain {
 			}
 			else {
 				if (_currentCard != null) {
-					_allDecks.getMemorizedDeck().enqueue(_currentCard);
+					_allDecks.getMainDeck().enqueue(_currentCard);
 					_currentCard = null;
 				}
 				_allDecks.getMemorizedDeck().transferCards(_allDecks.getMainDeck());
@@ -980,7 +981,7 @@ public class ControllerMain {
 			_popUpMessages = false;
 		}
 	}
-	
+
 	/**
 	 * Called when the user left or right clicks on the currently displaying Flash Card JPanel.
 	 * <br>Complexity: O(1).
@@ -1132,7 +1133,6 @@ public class ControllerMain {
 			_editFront = true;
 			_mainScreenJPanel.getFlashCardPanel().setText(_currentCard.getFrontData(), true, _currentCard.getID());
 			updateCard();
-			enqueueBackToCurrent();
 			setIsChanged(true);
 			setFrameTitleUnsaved();
 			_mainScreenJPanel.getEditCardJDialog().setVisible(false);
@@ -1227,7 +1227,7 @@ public class ControllerMain {
 	public File getFile() {
 		return _file;
 	}
-	
+
 	/**
 	 * This method is ran whenever the user closes the program under OSX.
 	 * @param mainController Reference to the main controller.
@@ -1258,48 +1258,48 @@ public class ControllerMain {
 			}
 		});
 	}
-	
+
 	/**
 	 * Adds various colors to the {@link #_colorsTable}
 	 */
 	public void addColorsToColorTable() {
 		//Red
 		_colorsTable.add(new Color(254, 187, 185));
-		
+
 		//Orange
 		_colorsTable.add(new Color(254, 222, 182));
-		
+
 		//Yellow
 		_colorsTable.add(new Color(254, 238, 179));
-		
+
 		//Green
 		_colorsTable.add(new Color(193, 245, 176));
-		
+
 		//Blue
 		_colorsTable.add(new Color(179, 216, 253));
-		
+
 		//Purple
 		_colorsTable.add(new Color(246, 213, 254));
-		
+
 		//Pink
 		_colorsTable.add(new Color(254, 192, 210));
-		
+
 		//Brown
 		_colorsTable.add(new Color(237, 222, 203));
-		
+
 		//Graphite
 		_colorsTable.add(new Color(216, 216, 220));
-		
+
 		//Light Purple
 		_colorsTable.add(new Color(204, 204, 255));
-		
+
 		//Teal
 		_colorsTable.add(new Color(153, 255, 204));
-		
+
 		//White
 		_colorsTable.add(Color.WHITE);
 	}
-	
+
 	/**
 	 * Obtains a color from one of the colors stored in {@link #_colorsTable}, uses modulus operator
 	 * to obtain the color in order.

@@ -357,7 +357,7 @@ public class ViewDeckIconJPanel extends JPanel {
 	 * <br>Complexity: O(N).
 	 * @param currentDeck Should be a new empty deck which will have cards enqueued into this.
 	 * @param copyDeck Copy of the deck that will have its cards dequeued and enqueued into currentDeck
-	 * but in reverse order.
+	 * but in reverse order
 	 */
 	private void recursiveReverseDeckCopy(ModelFlashCardDeck currentDeck, ModelFlashCardDeck copyDeck) {
 		ModelFlashCard temp = copyDeck.dequeue();
